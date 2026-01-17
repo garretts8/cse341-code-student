@@ -1,0 +1,23 @@
+{
+    "contact": {
+        "firstName": "Howard",
+        "lastName": "Newman",
+        "email": "how.newman@yahoo.com",
+        "favoriteColor": "Blue",
+        "birthday": "08/16/1988"
+    },
+    "contact2": {
+        "firstName": "Tony",
+        "lastName": "Newman",
+        "email": "ton.newman@yahoo.com",
+        "favoriteColor": "Red",
+        "birthday": "07/21/1994"
+    },
+    "contact3": {
+        "firstName": "Grayson",
+        "lastName": "Newman",
+        "email": "gray.newman@yahoo.com",
+        "favoriteColor": "Green",
+        "birthday": "08/18/2015"
+    }
+}
