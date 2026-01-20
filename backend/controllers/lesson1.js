@@ -1,6 +1,6 @@
 const path = require('path');
 
-const less1Route = (req, res) => {
+const lesson1Route = (req, res) => {
   res.sendFile(path.join(__dirname, '../../frontend/lesson1.html'));
 };
 
@@ -20,11 +20,10 @@ const testRoute = (req, res) => {
   res.sendFile(path.join(__dirname, '../../frontend/test.html'));
 };
 
-
 module.exports = {
-    less1Route,
+    lesson1Route,
     mitchelleRoute,
     spencerRoute,
     dadeRoute,
-    testRoute,
+    testRoute
 };
