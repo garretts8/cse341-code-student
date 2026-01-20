@@ -20,10 +20,17 @@ const testRoute = (req, res) => {
   res.sendFile(path.join(__dirname, '../../frontend/test.html'));
 };
 
+// POST /test/submit
+const testSubmit = (req, res) => {
+  const id = req.body.id;
+  res.redirect(`/test/${id}`);
+};
+
 module.exports = {
     lesson1Route,
     mitchelleRoute,
     spencerRoute,
     dadeRoute,
-    testRoute
+    testRoute, 
+    testSubmit
 };

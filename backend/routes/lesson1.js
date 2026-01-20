@@ -7,5 +7,6 @@ router.get('/mitchelle', lesson1.mitchelleRoute);
 router.get('/spencer', lesson1.spencerRoute);
 router.get('/dade', lesson1.dadeRoute);
 router.get('/test/:id', lesson1.testRoute);
+router.post('/test/submit', lesson1.testSubmit);
 
 module.exports = router;

@@ -3,30 +3,31 @@ const path = require('path');
 const cors = require('cors');
 const mongodb = require('./db/connect');
 
-
 const app = express();
-
 const PORT = process.env.PORT || 8080;
 
+
+/* ==========================
+   Middleware
+========================== */
 // Enable CORS and JSON parsing
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Static files
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Root page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
-//Lesson routes
+// Lesson 1 routes
 app.use(require('./routes/lesson1'));
 
-//API Routes
+// API routes (contacts, professional, etc.)
 app.use(require('./routes'));
-
-// Static files
-app.use(express.static(path.join(__dirname, '../frontend')));
-
 
 /* =====================================
    Initialize MongoDB and start server

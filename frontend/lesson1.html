@@ -7,8 +7,9 @@
   <body>
     <h1>Welcome</h1>
 
-    <form action="/test/submit" method="get">
-      <input type="text" placeholder="Static ID used" />
+    <form action="/test/submit" method="POST">
+      <label for="id">Enter an ID:</label>
+      <input type="number" name="id" required />
       <button type="submit">Submit</button>
     </form>
   </body>
