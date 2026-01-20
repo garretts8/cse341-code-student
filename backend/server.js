@@ -3,53 +3,38 @@ const path = require('path');
 const cors = require('cors');
 const mongodb = require('./db/connect');
 
-/* ===================================
-   Test and Contacts on Server 3000 and 8080
-===================================== */
-const app8080 = express();
-const app3000 = express();
+const app = express();
 
-const PORT_8080 = 8080;
-const PORT_3000 = 3000;
+const PORT = process.env.PORT || 8080;
 
-app8080.use(cors());
-app8080.use(express.json());
+// Enable CORS and JSON parsing
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app3000.use(express.json());
-app3000.use(express.urlencoded({ extended: true }));
+// serve frontend
+app.use(express.static(path.join(__dirname, '../frontend')));
 
-// default route
-app3000.get('/', (req, res) => {
+// routes
+//Professional and contacts routes
+app.use(require('./routes'));
+// Test routes ONLY
+app.use(require('./routes/lesson1'));
+
+// Root route serves lesson1.html
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/lesson1.html'));
 });
 
-// serve frontend
-app8080.use(express.static(path.join(__dirname, '../frontend')));
-
-// serve same frontend folder (HTML views)
-app3000.use(express.static(path.join(__dirname, '../frontend')));
-
-// student routes
-app8080.use(require('./routes'));
-
-// Test routes ONLY
-app3000.use(require('./routes/lesson1'));
-
-
-
-/* =========================
-   START BOTH SERVERS
-========================= */
+/* =====================================
+   Initialize MongoDB and start server
+======================================== */
 mongodb.initDb((err) => {
   if (err) {
     console.error(err);
   } else {
-    app8080.listen(PORT_8080, () => {
-      console.log(`Contacts app running on http://localhost:${PORT_8080}`);
-    });
-
-    app3000.listen(PORT_3000, () => {
-      console.log(`test app running on http://localhost:${PORT_3000}`);
+    app.listen(PORT, () => {
+      console.log(`App app running on http://localhost:${PORT}`);
     });
   }
 });
