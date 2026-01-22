@@ -5,15 +5,15 @@ const lesson1Route = (req, res) => {
 };
 
 const mitchelleRoute = (req, res) => {
-    res.send("Mitchelle Garrett");
+  res.send('Mitchelle Garrett');
 };
 
 const spencerRoute = (req, res) => {
-    res.send("Spencer Garrett");
+  res.send('Spencer Garrett');
 };
 
 const dadeRoute = (req, res) => {
-    res.send("Dade Garrett");
+  res.send('Dade Garrett');
 };
 
 const testRoute = (req, res) => {
@@ -22,15 +22,15 @@ const testRoute = (req, res) => {
 
 // POST /test/submit
 const testSubmit = (req, res) => {
-  const id = req.body.id;
+  const { id } = req.body;
   res.redirect(`/test/${id}`);
 };
 
 module.exports = {
-    lesson1Route,
-    mitchelleRoute,
-    spencerRoute,
-    dadeRoute,
-    testRoute, 
-    testSubmit
+  lesson1Route,
+  mitchelleRoute,
+  spencerRoute,
+  dadeRoute,
+  testRoute,
+  testSubmit,
 };

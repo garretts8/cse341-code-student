@@ -1,11 +1,11 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+// imports mongodb from ./db/connect
 const mongodb = require('./db/connect');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-
 
 /* ==========================
    Middleware
@@ -32,12 +32,14 @@ app.use(require('./routes'));
 /* =====================================
    Initialize MongoDB and start server
 ======================================== */
-mongodb.initDb((err) => {
-  if (err) {
-    console.error(err);
-  } else {
+// Calls mongodb.initDb() to establish connection
+mongodb
+  .initDb()
+  .then(() => {
     app.listen(PORT, () => {
       console.log(`App running on http://localhost:${PORT}`);
     });
-  }
-});
+  })
+  .catch((err) => {
+    console.error(err);
+  });
