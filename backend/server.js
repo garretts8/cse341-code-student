@@ -29,6 +29,10 @@ app.use(require('./routes/lesson1'));
 // API routes (contacts, professional, etc.)
 app.use(require('./routes'));
 
+app.post('/contacts', (req, res) => {
+  res.status(200).json({ message: 'POST route hit!' });
+});
+
 /* =====================================
    Initialize MongoDB and start server
 ======================================== */

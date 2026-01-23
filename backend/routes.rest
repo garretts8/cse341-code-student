@@ -16,3 +16,15 @@ GET http://localhost:8080/contacts/696be7d8f573a669c8752663
 
 ### GET a single contacts by ID
 GET http://localhost:8080/contacts/696be7eff573a669c8752665 
+
+### POST create contact
+POST http://localhost:8080/contacts
+Content-Type: application/json
+
+{
+  "firstName": "Martha",
+  "lastName": "Stewart",
+  "email": "martha.stewart@gmail.com",
+  "favoriteColor": "pink",
+  "birthday": "11/07/1957"
+}

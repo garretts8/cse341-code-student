@@ -16,6 +16,7 @@ const getAllContacts = async (req, res) => {
     res.status(500).json({ message: 'err.message' });
   }
 };
+
 // To GET a single contact
 const getSingleContact = async (req, res) => {
   try {
@@ -36,7 +37,41 @@ const getSingleContact = async (req, res) => {
   }
 };
 
+// Use POST to create a contact
+const createContact = async (req, res) => {
+  try {
+    const contact = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      favoriteColor: req.body.favoriteColor,
+      birthday: req.body.birthday,
+    };
+
+    // all fields required
+    if (
+      !contact.firstName ||
+      !contact.lastName ||
+      !contact.email ||
+      !contact.favoriteColor ||
+      !contact.birthday
+    ) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    const response = await mongodb
+      .getDb()
+      .collection('contacts')
+      .insertOne(contact);
+
+    res.status(201).json({ id: response.insertedId });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getAllContacts,
   getSingleContact,
+  createContact,
 };

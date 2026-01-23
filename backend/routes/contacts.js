@@ -6,4 +6,7 @@ routes.get('/', contactController.getAllContacts);
 // GET a single contact
 routes.get('/:id', contactController.getSingleContact);
 
+// POST contact
+routes.post('/', contactController.createContact);
+
 module.exports = routes;
