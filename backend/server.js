@@ -28,24 +28,7 @@ app.use(require('./routes/lesson1'));
 
 // API routes (contacts, professional, etc.)
 app.use(require('./routes'));
-// // To add a contact
-// app.post('/contacts', (req, res) => {
-//   res.status(200).json({ message: 'POST route hit!' });
-// });
-// // To update a contact
-// app.put('/contacts', (req, res) => {
-//   res.status(200).json({ message: 'PUT route hit!' });
-// });
 
-// // To delete a contact
-// app.delete('/contacts', (req, res) => {
-//   res.status(200).json({ message: 'DELETE route hit!' });
-// });
-
-/* =====================================
-   Initialize MongoDB and start server
-======================================== */
-// Calls mongodb.initDb() to establish connection
 mongodb
   .initDb()
   .then(() => {
