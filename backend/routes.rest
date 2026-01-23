@@ -28,3 +28,15 @@ Content-Type: application/json
   "favoriteColor": "pink",
   "birthday": "11/07/1957"
 }
+
+### PUT update contact
+PUT http://localhost:8080/contacts/696be7b1f573a669c8752661
+Content-Type: application/json
+
+{
+  "firstName": "Howard",
+  "lastName": "Newman",
+  "email": "howard.newman@gmail.com",
+  "favoriteColor": "Purple",
+  "birthday": "08/16/1988"
+}

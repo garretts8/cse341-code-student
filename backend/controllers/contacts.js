@@ -70,8 +70,36 @@ const createContact = async (req, res) => {
   }
 };
 
+// Use PUT to update a contact
+const updateContact = async (req, res) => {
+  try {
+    const contactId = new ObjectId(req.params.id);
+    const contact = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      favoriteColor: req.body.favoriteColor,
+      birthday: req.body.birthday,
+    };
+
+    const response = await mongodb
+      .getDb()
+      .collection('contacts')
+      .replaceOne({ _id: contactId }, contact);
+
+    if (response.modifiedCount === 0) {
+      res.status(404).json({ message: 'Contact not found' });
+    } else {
+      res.status(204).send();
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getAllContacts,
   getSingleContact,
   createContact,
+  updateContact,
 };
