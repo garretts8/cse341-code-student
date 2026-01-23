@@ -34,7 +34,12 @@ app.post('/contacts', (req, res) => {
 });
 // To update a contact
 app.put('/contacts', (req, res) => {
-  res.status(200).json({ message: 'Pull route hit!' });
+  res.status(200).json({ message: 'PUT route hit!' });
+});
+
+// To delete a contact
+app.delete('/contacts', (req, res) => {
+  res.status(200).json({ message: 'DELETE route hit!' });
 });
 
 /* =====================================

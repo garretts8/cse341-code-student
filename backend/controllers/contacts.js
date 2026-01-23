@@ -97,9 +97,29 @@ const updateContact = async (req, res) => {
   }
 };
 
+// Use DELETE to delete a contact
+const deleteContact = async (req, res) => {
+  try {
+    const contactId = new ObjectId(req.params.id);
+    const response = await mongodb
+      .getDb()
+      .collection('contacts')
+      .deleteOne({ _id: contactId });
+
+    if (response.deletedCount === 0) {
+      res.status(404).json({ message: 'Contact not found' });
+    } else {
+      res.status(204).send();
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getAllContacts,
   getSingleContact,
   createContact,
   updateContact,
+  deleteContact,
 };
