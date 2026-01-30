@@ -18,9 +18,36 @@ app.use(express.urlencoded({ extended: true }));
 // Static files
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Root page
+/* ==========================
+   Frontend HTML routes
+========================== */
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
+app.get('/lesson1', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/lesson1.html'));
+});
+
+app.get('/test/:id', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/test.html'));
+});
+
+/* ==========================
+   Contacts routes 
+========================== */
+// To add a contact
+app.post('/contacts', (req, res) => {
+  res.status(200).json({ message: 'POST route hit!' });
+});
+// To update a contact
+app.put('/contacts', (req, res) => {
+  res.status(200).json({ message: 'PUT route hit!' });
+});
+
+// To delete a contact
+app.delete('/contacts', (req, res) => {
+  res.status(200).json({ message: 'DELETE route hit!' });
 });
 
 // Lesson 1 routes
@@ -29,6 +56,15 @@ app.use(require('./routes/lesson1'));
 // API routes (contacts, professional, etc.)
 app.use(require('./routes'));
 
+/* ==========================
+   API route for temples only
+========================== */
+app.use('/api/temple', require('./routes/temple'));
+
+/* =====================================
+   Initialize MongoDB and start server
+======================================== */
+// Calls mongodb.initDb() to establish connection
 mongodb
   .initDb()
   .then(() => {
