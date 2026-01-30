@@ -30,7 +30,7 @@ Content-Type: application/json
 }
 
 ### PUT update contact
-PUT http://localhost:8080/contacts/6973e457c7a49d78ac96759d
+PUT http://localhost:8080/contacts/697c29dee93e25e3f3821933
 Content-Type: application/json
 
 {
@@ -42,4 +42,4 @@ Content-Type: application/json
 }
 
 ### PUT update contact
-DELETE http://localhost:8080/contacts/6973e457c7a49d78ac96759d
+DELETE http://localhost:8080/contacts/697c29dee93e25e3f3821933

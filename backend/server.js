@@ -33,23 +33,6 @@ app.get('/test/:id', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/test.html'));
 });
 
-/* ==========================
-   Contacts routes 
-========================== */
-// To add a contact
-app.post('/contacts', (req, res) => {
-  res.status(200).json({ message: 'POST route hit!' });
-});
-// To update a contact
-app.put('/contacts', (req, res) => {
-  res.status(200).json({ message: 'PUT route hit!' });
-});
-
-// To delete a contact
-app.delete('/contacts', (req, res) => {
-  res.status(200).json({ message: 'DELETE route hit!' });
-});
-
 // Lesson 1 routes
 app.use(require('./routes/lesson1'));
 
