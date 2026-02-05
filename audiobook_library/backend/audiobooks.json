@@ -1,0 +1,68 @@
+[
+  {
+        "_id": {
+        "$oid": "6984291c7ce7232969cc8678"
+        },
+        "title": "The Historian",
+        "author": "Elizabeth Kostova",
+        "listening_length": "26 hours and 6 minutes",
+        "publisher": "Random House Audio",
+        "narrator": "Justine Eyre, Paul Michael",
+        "ASIN": "JB000E0LDRU",
+        "audio_release_date": "November 30, 2010",
+        "description": "The record-breaking phenomenon from Elizabeth Kostova is a celebrated masterpiece that refashioned the vampire myth into a compelling contemporary novel, a late-night page-turner (San Francisco Chronicle). Breathtakingly suspenseful and beautifully written, The Historian is the story of a..."
+    },
+  {
+        "_id": {
+        "$oid": "6984292e7ce7232969cc867a"
+        },
+        "title": "The Summer I Turned Pretty",
+        "author": "Jenny Han",
+        "listening_length": "6 hours",
+        "publisher": "Recorded Books",
+        "narrator": "Lola Tung",
+        "ASIN": "B09VY43T2Z",
+        "audio_release_date": "May 03, 2022",
+        "description": "Belly measures her life in summers. Everything good, everything magical happens between the months of June and August. Winters are simply a time to count the weeks until the next summer, a place away from the beach house, away from Susannah, and away from Jeremiah and Conrad...."
+    },
+    {
+        "_id": {
+        "$oid": "6984293d7ce7232969cc867c"
+        },
+        "title": "Mr. Malcolm's List",
+        "author": "Suzanne Allain",
+        "listening_length": "5 hours and 31 minutes",
+        "publisher": "Penguin Audio",
+        "narrator": "Elizabeth Knowelden",
+        "ASIN": "B082MSWGYV",
+        "audio_release_date": "July 28, 2020",
+        "description": "NOW A MAJOR MOTION PICTURE It is a truth universally acknowledged that an arrogant bachelor insistent on a wife who meets the strictest of requirements—deserves his comeuppance. The Honourable Mr. Jeremy Malcolm is searching for a wife, but not just any wife. As the target of matchmaking..."
+    },
+    {
+        "_id": {
+        "$oid": "698429547ce7232969cc867e"
+        },
+        "title": "The Chemist",
+        "author": "Stephenie Meyer",
+        "listening_length": "17 hours and 1 minute",
+        "publisher": "Little, Brown & Company",
+        "narrator": "Ellen Archer",
+        "ASIN": "B01LZMGSKX",
+        "audio_release_date": "November 08, 2016",
+        "description": "In this gripping page-turner, an ex-agent on the run from her former employers must take one more case to clear her name and save her life. She used to work for the U.S. government, but very few people ever knew that. An expert in her field, she was one of the darkest secrets of an agency so..."
+    },
+    {
+        "_id": {
+        "$oid": "698429637ce7232969cc8680"
+        },
+        "title": "Midnight Sun",
+        "author": "Stephenie Meyer",
+        "listening_length": "25 hours and 49 minutes",
+        "publisher": "Little, Brown & Company",
+        "narrator": "Jake Abel",
+        "ASIN": "B0886JWK5N",
+        "audio_release_date": "August 04, 2020",
+        "description": "Relive the passion and thrill of the New York Times bestselling Twilight Saga romance with this highly anticipated companion, retelling the iconic love story of Bella and Edward, from the vampire's point of view. When Edward Cullen and Bella Swan met in Twilight, an iconic love story was born..."
+    }
+]
+

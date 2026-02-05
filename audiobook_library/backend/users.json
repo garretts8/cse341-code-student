@@ -1,0 +1,24 @@
+[
+    {
+        "_id": {
+        "$oid": "69843aa57ce7232969cc8688"
+        },
+        "googleId": "123456789012345678901",
+        "displayName": "John Smith",
+        "firstName": "John",
+        "lastName": "Smith",
+        "email": "2john.smith@gmail.com",
+        "date": "01/10/2024"
+    },
+    {
+        "_id": {
+        "$oid": "69843afa7ce7232969cc868a"
+        },
+        "googleId": "123456789012345678902",
+        "displayName": "James Bond",
+        "firstName": "James",
+        "lastName": "Bond",
+        "email": "j.bond@gmail.com",
+        "date": "03/11/2024"
+    }
+]
