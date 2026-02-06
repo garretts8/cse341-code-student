@@ -1,0 +1,32 @@
+### Health Check
+GET http://localhost:3000/
+
+### Documentation
+GET http://localhost:3000/api-docs
+
+### GET all audiobooks
+GET http://localhost:3000/audiobooks
+
+### GET single audiobook by ID
+GET http://localhost:83000/audiobooks/6984291c7ce7232969cc8678
+
+### POST create new audiobook
+POST http://localhost:3000/audiobooks
+Content-Type: application/json
+
+{
+  "title": "The Hobbit",
+  "author": "J.R.R. Tolkien",
+  "listening_length": "11 hours and 5 minutes",
+  "publisher": "HarperCollins",
+  "narrator": "Rob Inglis",
+  "ASIN": "B004WY3DU0",
+  "audio_release_date": "January 01, 2012",
+  "description": "The Hobbit is a tale of high adventure, undertaken by a company of dwarves in search of dragon-guarded gold..."
+}
+
+### OAuth Login (Start authentication flow)
+GET http://localhost:3000/users/auth/google
+
+### Get current user profile (after authentication)
+GET http://localhost:3000/users/profile
