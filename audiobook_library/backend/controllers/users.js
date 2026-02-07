@@ -1,102 +1,102 @@
-const { ObjectId } = require('mongodb');
-const mongodb = require('../db/connect');
+// const { ObjectId } = require('mongodb');
+// const mongodb = require('../db/connect');
 
-// GET all users (admin only - protected by OAuth)
-const getAllUsers = async (req, res) => {
-  try {
-    // Check if user is authenticated
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
+// // GET all users (admin only - protected by OAuth)
+// const getAllUsers = async (req, res) => {
+//   try {
+//     // Check if user is authenticated
+//     if (!req.isAuthenticated()) {
+//       return res.status(401).json({ message: 'Unauthorized' });
+//     }
 
-    const result = await mongodb
-      .getDb()
-      .collection('users')
-      .find()
-      .toArray();
+//     const result = await mongodb
+//       .getDb()
+//       .collection('users')
+//       .find()
+//       .toArray();
 
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+//     res.status(200).json(result);
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// };
 
-// GET current user profile
-const getCurrentUser = async (req, res) => {
-  try {
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ message: 'Not authenticated' });
-    }
+// // GET current user profile
+// const getCurrentUser = async (req, res) => {
+//   try {
+//     if (!req.isAuthenticated()) {
+//       return res.status(401).json({ message: 'Not authenticated' });
+//     }
 
-    res.status(200).json(req.user);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+//     res.status(200).json(req.user);
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// };
 
-// GET user by ID
-const getUserById = async (req, res) => {
-  try {
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
+// // GET user by ID
+// const getUserById = async (req, res) => {
+//   try {
+//     if (!req.isAuthenticated()) {
+//       return res.status(401).json({ message: 'Unauthorized' });
+//     }
 
-    const userId = new ObjectId(req.params.id);
-    const result = await mongodb
-      .getDb()
-      .collection('users')
-      .findOne({ _id: userId });
+//     const userId = new ObjectId(req.params.id);
+//     const result = await mongodb
+//       .getDb()
+//       .collection('users')
+//       .findOne({ _id: userId });
 
-    if (!result) {
-      res.status(404).json({ message: 'User not found' });
-    } else {
-      // Don't return sensitive data
-      const { googleId, ...userData } = result;
-      res.status(200).json(userData);
-    }
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+//     if (!result) {
+//       res.status(404).json({ message: 'User not found' });
+//     } else {
+//       // Don't return sensitive data
+//       const { googleId, ...userData } = result;
+//       res.status(200).json(userData);
+//     }
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// };
 
-// Update user profile
-const updateUser = async (req, res) => {
-  try {
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
+// // Update user profile
+// const updateUser = async (req, res) => {
+//   try {
+//     if (!req.isAuthenticated()) {
+//       return res.status(401).json({ message: 'Unauthorized' });
+//     }
 
-    const userId = new ObjectId(req.params.id);
-    
-    // Users can only update their own profile
-    if (req.user._id.toString() !== userId.toString()) {
-      return res.status(403).json({ message: 'Forbidden' });
-    }
+//     const userId = new ObjectId(req.params.id);
 
-    const userData = {
-      displayName: req.body.displayName,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email
-    };
+//     // Users can only update their own profile
+//     if (req.user._id.toString() !== userId.toString()) {
+//       return res.status(403).json({ message: 'Forbidden' });
+//     }
 
-    const response = await mongodb
-      .getDb()
-      .collection('users')
-      .updateOne({ _id: userId }, { $set: userData });
+//     const userData = {
+//       displayName: req.body.displayName,
+//       firstName: req.body.firstName,
+//       lastName: req.body.lastName,
+//       email: req.body.email
+//     };
 
-    if (response.matchedCount === 0) {
-      res.status(404).json({ message: 'User not found' });
-    } else {
-      res.status(200).json({ message: 'User updated successfully' });
-    }
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+//     const response = await mongodb
+//       .getDb()
+//       .collection('users')
+//       .updateOne({ _id: userId }, { $set: userData });
 
-module.exports = {
-  getAllUsers,
-  getCurrentUser,
-  getUserById,
-};
+//     if (response.matchedCount === 0) {
+//       res.status(404).json({ message: 'User not found' });
+//     } else {
+//       res.status(200).json({ message: 'User updated successfully' });
+//     }
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// };
+
+// module.exports = {
+//   getAllUsers,
+//   getCurrentUser,
+//   getUserById,
+// };

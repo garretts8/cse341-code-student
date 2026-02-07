@@ -10,7 +10,7 @@ Content-Type: application/json
 
 ### Get audiobook by ID
 # Replace {{id}} with a real MongoDB _id
-GET http://localhost:8080/audiobooks/69879b8d3ee9c679f38e4fd4
+GET http://localhost:8080/audiobooks/6987a0fb3ee9c679f38e4fd8
 Content-Type: application/json
 
 
@@ -19,7 +19,7 @@ POST http://localhost:8080/audiobooks
 Content-Type: application/json
 
 {
-  "title": "Breaking Dwan",
+  "title": "Scoobie-Doo",
   "author": "Dtephenie Meyer",
   "listening_length": "20 hours and 28 minutes",
   "publisher": "Listening Library",
@@ -32,11 +32,11 @@ Content-Type: application/json
 
 
 ### Update an audiobook
-PUT http://localhost:8080/audiobooks/69879b8d3ee9c679f38e4fd4
+PUT http://localhost:8080/audiobooks/6987a0fb3ee9c679f38e4fd8
 Content-Type: application/json
 
 {
-  "title": "Breaking Dawn",
+  "title": "Scooby-Doo!",
   "author": "Stephenie Meyer",
   "listening_length": "20 hours and 28 minutes",
   "publisher": "Listening Library",
@@ -48,5 +48,5 @@ Content-Type: application/json
 
 
 ### Delete an audiobook
-DELETE http://localhost:8080/audiobooks/69879b8d3ee9c679f38e4fd4
+DELETE http://localhost:8080/audiobooks/6987a0fb3ee9c679f38e4fd8
 Content-Type: application/json
