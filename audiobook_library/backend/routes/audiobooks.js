@@ -7,7 +7,7 @@ routes.get('/', audiobookController.getAllAudiobooks);
 // GET a single audiobook by ID
 routes.get('/:id', audiobookController.getSingleAudiobook);
 
-// POST create a new audiobook (protected by OAuth)
+// POST create a new audiobook
 routes.post('/', audiobookController.createAudiobook);
 
 module.exports = routes;

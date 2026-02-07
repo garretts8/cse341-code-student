@@ -1,32 +1,51 @@
-### Health Check
-GET http://localhost:3000/
+### Root test (optional)
+GET http://localhost:8080/
+Content-Type: application/json
 
-### Documentation
-GET http://localhost:3000/api-docs
 
-### GET all audiobooks
-GET http://localhost:3000/audiobooks
+### Get all audiobooks
+GET http://localhost:8080/audiobooks
+Content-Type: application/json
 
-### GET single audiobook by ID
-GET http://localhost:83000/audiobooks/6984291c7ce7232969cc8678
 
-### POST create new audiobook
-POST http://localhost:3000/audiobooks
+### Get audiobook by ID
+# Replace {{id}} with a real MongoDB _id
+GET http://localhost:8080/audiobooks/69871950bb86969351ee40c6
+Content-Type: application/json
+
+
+### Create a new audiobook
+POST http://localhost:8080/audiobooks
 Content-Type: application/json
 
 {
-  "title": "The Hobbit",
-  "author": "J.R.R. Tolkien",
-  "listening_length": "11 hours and 5 minutes",
-  "publisher": "HarperCollins",
-  "narrator": "Rob Inglis",
-  "ASIN": "B004WY3DU0",
-  "audio_release_date": "January 01, 2012",
-  "description": "The Hobbit is a tale of high adventure, undertaken by a company of dwarves in search of dragon-guarded gold..."
+  "title": "Twilight",
+  "author": "Stephenie Meyer",
+  "listening_length": "12 hours and 51 minutes",
+  "publisher": "Listening Library",
+  "narrator": "Ilyana Kadushin",
+  "ASIN": "B000BO2D64",
+  "audio_release_date": "October 05, 2005",
+  "description": "About three things I was absolutely positive: First, Edward was a vampire. Second, there was a part of him–and I didn’t know how dominant that part might be–that thirsted for my blood. And third, I was unconditionally and irrevocably in love with him."
 }
 
-### OAuth Login (Start authentication flow)
-GET http://localhost:3000/users/auth/google
 
-### Get current user profile (after authentication)
-GET http://localhost:3000/users/profile
+### Update an audiobook
+# PUT http://localhost:8080/audiobooks/698717e9bb86969351ee40c5
+# Content-Type: application/json
+
+# {
+#   "title": "Twilight",
+#   "author": "Stephenie Meyer",
+#   "listening_length": "12 hours and 51 minutes",
+#   "publisher": "Listening Library",
+#   "narrator": "Ilyana Kadushin",
+#   "ASIN": "B000BO2D64",
+#   "audio_release_date": "October 05, 2005",
+#   "description": "About three things I was absolutely positive: First, Edward was a vampire. Second, there was a part of him–and I didn’t know how dominant that part might be–that thirsted for my blood. And third, I was unconditionally and irrevocably in love with him."
+# }
+
+
+### Delete an audiobook
+# DELETE http://localhost:8080/audiobooks/698717e9bb86969351ee40c5
+# Content-Type: application/json
