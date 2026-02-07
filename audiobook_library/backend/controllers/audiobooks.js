@@ -17,7 +17,7 @@ const getAllAudiobooks = async (req, res) => {
 };
 
 // GET audiobook by ID
-const getSingleAudiobook = async (req, res) => {
+const getAudiobookById = async (req, res) => {
   try {
     const audiobookId = new ObjectId(req.params.id);
 
@@ -75,8 +75,59 @@ const createAudiobook = async (req, res) => {
   }
 };
 
+// PUT update an audiobook
+const updateAudiobook = async (req, res) => {
+  try {
+    const audiobookId = new ObjectId(req.params.id);
+    const audiobook = {
+      title: req.body.title,
+      author: req.body.author,
+      listening_length: req.body.listening_length,
+      publisher: req.body.publisher,
+      narrator: req.body.narrator,
+      ASIN: req.body.ASIN,
+      audio_release_date: req.body.audio_release_date,
+      description: req.body.description,
+    };
+
+    const response = await mongodb
+      .getDb()
+      .collection('audiobooks')
+      .replaceOne({ _id: audiobookId }, audiobook);
+
+    if (response.modifiedCount === 0) {
+      res.status(404).json({ message: 'Audiobook not found' });
+    } else {
+      res.status(204).send();
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Use DELETE to delete an audiobook
+const deleteAudiobook = async (req, res) => {
+  try {
+    const audiobookId = new ObjectId(req.params.id);
+    const response = await mongodb
+      .getDb()
+      .collection('audiobooks')
+      .deleteOne({ _id: audiobookId });
+
+    if (response.deletedCount === 0) {
+      res.status(404).json({ message: 'Audiobook not found' });
+    } else {
+      res.status(204).send();
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getAllAudiobooks,
-  getSingleAudiobook,
+  getAudiobookById,
   createAudiobook,
+  updateAudiobook,
+  deleteAudiobook,
 };

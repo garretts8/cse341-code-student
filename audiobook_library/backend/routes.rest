@@ -1,4 +1,4 @@
-### Root test (optional)
+### Root test 
 GET http://localhost:8080/
 Content-Type: application/json
 
@@ -10,7 +10,7 @@ Content-Type: application/json
 
 ### Get audiobook by ID
 # Replace {{id}} with a real MongoDB _id
-GET http://localhost:8080/audiobooks/69871950bb86969351ee40c6
+GET http://localhost:8080/audiobooks/69879b8d3ee9c679f38e4fd4
 Content-Type: application/json
 
 
@@ -19,33 +19,34 @@ POST http://localhost:8080/audiobooks
 Content-Type: application/json
 
 {
-  "title": "Twilight",
-  "author": "Stephenie Meyer",
-  "listening_length": "12 hours and 51 minutes",
+  "title": "Breaking Dwan",
+  "author": "Dtephenie Meyer",
+  "listening_length": "20 hours and 28 minutes",
   "publisher": "Listening Library",
-  "narrator": "Ilyana Kadushin",
-  "ASIN": "B000BO2D64",
-  "audio_release_date": "October 05, 2005",
-  "description": "About three things I was absolutely positive: First, Edward was a vampire. Second, there was a part of him–and I didn’t know how dominant that part might be–that thirsted for my blood. And third, I was unconditionally and irrevocably in love with him."
+  "narrator": "Ilyana Kadushin, Matt Walters",
+  "ASIN": "B001FD6RLM",
+  "audio_release_date": "September 02, 2008",
+  "description": "To be irrevocably in love with a vampire is both fantasy and nightmare woven into a dangerously heightened reality for Bella Swan. Pulled in one direction by her intense passion for Edward Cullen, and in another by her profound connection to werewolf Jacob Black, she has endured a tumultuous year of temptation , loss, and strife to reach the ultimate turning point. Her imminent choice to either join the dark but seductive world of immortals or pursue a fully human life has become the thread from which the date of two tribes hangs."
 }
 
 
-### Update an audiobook
-# PUT http://localhost:8080/audiobooks/698717e9bb86969351ee40c5
-# Content-Type: application/json
 
-# {
-#   "title": "Twilight",
-#   "author": "Stephenie Meyer",
-#   "listening_length": "12 hours and 51 minutes",
-#   "publisher": "Listening Library",
-#   "narrator": "Ilyana Kadushin",
-#   "ASIN": "B000BO2D64",
-#   "audio_release_date": "October 05, 2005",
-#   "description": "About three things I was absolutely positive: First, Edward was a vampire. Second, there was a part of him–and I didn’t know how dominant that part might be–that thirsted for my blood. And third, I was unconditionally and irrevocably in love with him."
-# }
+### Update an audiobook
+PUT http://localhost:8080/audiobooks/69879b8d3ee9c679f38e4fd4
+Content-Type: application/json
+
+{
+  "title": "Breaking Dawn",
+  "author": "Stephenie Meyer",
+  "listening_length": "20 hours and 28 minutes",
+  "publisher": "Listening Library",
+  "narrator": "Ilyana Kadushin, Matt Walters",
+  "ASIN": "B001FD6RLM",
+  "audio_release_date": "September 02, 2008",
+  "description": "To be irrevocably in love with a vampire is both fantasy and nightmare woven into a dangerously heightened reality for Bella Swan. Pulled in one direction by her intense passion for Edward Cullen, and in another by her profound connection to werewolf Jacob Black, she has endured a tumultuous year of temptation , loss, and strife to reach the ultimate turning point. Her imminent choice to either join the dark but seductive world of immortals or pursue a fully human life has become the thread from which the date of two tribes hangs."
+}
 
 
 ### Delete an audiobook
-# DELETE http://localhost:8080/audiobooks/698717e9bb86969351ee40c5
-# Content-Type: application/json
+DELETE http://localhost:8080/audiobooks/69879b8d3ee9c679f38e4fd4
+Content-Type: application/json

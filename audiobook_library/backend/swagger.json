@@ -5,18 +5,14 @@
     "description": "Audiobook Library CRUD API",
     "version": "1.0.0"
   },
-  "host": "localhost:8080",
   "basePath": "/",
-  "schemes": [
-    "http"
-  ],
   "paths": {
-    "/": {
+    "/audiobooks": {
       "get": {
-        "description": "",
+        "summary": "Get all audiobooks",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "List of audiobooks"
           },
           "500": {
             "description": "Internal Server Error"
@@ -24,37 +20,44 @@
         }
       },
       "post": {
-        "description": "",
+        "summary": "Create a new audiobook",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
+              "required": [
+                "title",
+                "author",
+                "listening_length",
+                "publisher",
+                "narrator",
+                "ASIN",
+                "audio_release_date",
+                "description"
+              ],
               "properties": {
-                "title": {
-                  "example": "any"
-                },
-                "author": {
-                  "example": "any"
-                },
+                "title": { "type": "string", "example": "Twilight" },
+                "author": { "type": "string", "example": "Stephenie Meyer" },
                 "listening_length": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "12 hours and 51 minutes"
                 },
                 "publisher": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Listening Library"
                 },
-                "narrator": {
-                  "example": "any"
-                },
-                "ASIN": {
-                  "example": "any"
-                },
+                "narrator": { "type": "string", "example": "Ilyana Kadushin" },
+                "ASIN": { "type": "string", "example": "B000BO2D64" },
                 "audio_release_date": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "October 05, 2005"
                 },
                 "description": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "A vampire romance novel."
                 }
               }
             }
@@ -62,69 +65,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/audiobooks/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "example": "any"
-                },
-                "author": {
-                  "example": "any"
-                },
-                "listening_length": {
-                  "example": "any"
-                },
-                "publisher": {
-                  "example": "any"
-                },
-                "narrator": {
-                  "example": "any"
-                },
-                "ASIN": {
-                  "example": "any"
-                },
-                "audio_release_date": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
+            "description": "Audiobook created"
           },
           "400": {
             "description": "Bad Request"
@@ -137,7 +78,7 @@
     },
     "/audiobooks/{id}": {
       "get": {
-        "description": "",
+        "summary": "Get audiobook by ID",
         "parameters": [
           {
             "name": "id",
@@ -148,30 +89,58 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Audiobook found"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Audiobook not found"
           },
           "500": {
             "description": "Internal Server Error"
           }
         }
-      }
-    },
-    "/api-docs": {
-      "get": {
-        "description": "",
+      },
+      "put": {
+        "summary": "Update an audiobook",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": { "type": "string" },
+                "author": { "type": "string" },
+                "listening_length": { "type": "string" },
+                "publisher": { "type": "string" },
+                "narrator": { "type": "string" },
+                "ASIN": { "type": "string" },
+                "audio_release_date": { "type": "string" },
+                "description": { "type": "string" }
+              }
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "204": {
+            "description": "Audiobook updated"
+          },
+          "404": {
+            "description": "Audiobook not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
-      }
-    },
-    "/{id}": {
-      "get": {
-        "description": "",
+      },
+      "delete": {
+        "summary": "Delete an audiobook",
         "parameters": [
           {
             "name": "id",
@@ -181,11 +150,11 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "Audiobook deleted"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Audiobook not found"
           },
           "500": {
             "description": "Internal Server Error"
