@@ -5,8 +5,8 @@ const doc = {
     title: 'Audiobook Library API',
     description: 'Audiobook Library CRUD API',
   },
-  host: 'localhost:8080',
-  schemes: ['http'],
+  host: process.env.HOST || 'localhost:8080',
+  schemes: ['https', 'http'],
 };
 
 const outputFile = './swagger.json';
