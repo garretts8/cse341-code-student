@@ -1,35 +1,19 @@
 const routes = require('express').Router();
-const passport = require('passport');
 const userController = require('../controllers/users');
 
-// Authentication middleware
-const isAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.status(401).json({ message: 'Authentication required' });
-};
+// GET all users
+routes.get('/', userController.getAllUsers);
 
-// OAuth routes
-routes.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
+// GET a single user by ID
+routes.get('/:id', userController.getUserById);
 
-routes.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  userController.oauthCallback
-);
+// POST to create a new user
+routes.post('/', userController.createUser);
 
-// Logout
-// routes.get('/logout', isAuthenticated, userController.logoutUser);
+// PUT to update a user
+routes.put('/:id', userController.updateUser);
 
-// GET current user profile
-routes.get('/profile', isAuthenticated, userController.getCurrentUser);
-
-// GET all users (admin only)
-routes.get('/', isAuthenticated, userController.getAllUsers);
-
-// PUT update user profile
-routes.put('/:id', isAuthenticated, userController.updateUser);
+// DELETE to delete a user
+routes.delete('/:id', userController.deleteUser);
 
 module.exports = routes;

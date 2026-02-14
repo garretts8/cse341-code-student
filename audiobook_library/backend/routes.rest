@@ -2,17 +2,15 @@
 GET http://localhost:8080/
 Content-Type: application/json
 
-
 ### Get all audiobooks
 GET http://localhost:8080/audiobooks
 Content-Type: application/json
 
-
 ### Get audiobook by ID
 # Replace {{id}} with a real MongoDB _id
-GET http://localhost:8080/audiobooks/6987a0fb3ee9c679f38e4fd8
-Content-Type: application/json
+GET http://localhost:8080/audiobooks/698ff7ff98bedb31d7700bb3
 
+Content-Type: application/json
 
 ### Create a new audiobook
 POST http://localhost:8080/audiobooks
@@ -29,10 +27,8 @@ Content-Type: application/json
   "description": "To be irrevocably in love with a vampire is both fantasy and nightmare woven into a dangerously heightened reality for Bella Swan. Pulled in one direction by her intense passion for Edward Cullen, and in another by her profound connection to werewolf Jacob Black, she has endured a tumultuous year of temptation , loss, and strife to reach the ultimate turning point. Her imminent choice to either join the dark but seductive world of immortals or pursue a fully human life has become the thread from which the date of two tribes hangs."
 }
 
-
-
 ### Update an audiobook
-PUT http://localhost:8080/audiobooks/6987a0fb3ee9c679f38e4fd8
+PUT http://localhost:8080/audiobooks/698ff7ff98bedb31d7700bb7
 Content-Type: application/json
 
 {
@@ -46,7 +42,45 @@ Content-Type: application/json
   "description": "To be irrevocably in love with a vampire is both fantasy and nightmare woven into a dangerously heightened reality for Bella Swan. Pulled in one direction by her intense passion for Edward Cullen, and in another by her profound connection to werewolf Jacob Black, she has endured a tumultuous year of temptation , loss, and strife to reach the ultimate turning point. Her imminent choice to either join the dark but seductive world of immortals or pursue a fully human life has become the thread from which the date of two tribes hangs."
 }
 
-
 ### Delete an audiobook
-DELETE http://localhost:8080/audiobooks/6987a0fb3ee9c679f38e4fd8
+DELETE http://localhost:8080/audiobooks/698ff96d98bedb31d7700bb8
+Content-Type: application/json
+
+### Get all users
+GET http://localhost:8080/users
+
+### Get user by ID
+GET http://localhost:8080/users/69843aa57ce7232969cc8688
+
+### Create user
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+    "_id": "69843aa57ce7232969cc8688",
+    "googleId": "123456789012345678903",
+    "displayName": "Jan Eyre",
+    "firstName": "Jane",
+    "lastName": "Eyre",
+    "email": "jeyre@gmail.com",
+    "date": "01/10/2024"
+  }
+
+
+### Update a user
+PUT http://localhost:8080/users/698ffab398bedb31d7700bb9
+Content-Type: application/json
+
+{
+    "_id": "69843aa57ce7232969cc8688",
+    "googleId": "123456789012345678903",
+    "displayName": "Jane Eyre",
+    "firstName": "Jane",
+    "lastName": "Eyre",
+    "email": "jane.eyre@gmail.com",
+    "date": "01/10/2024"
+}
+
+### Delete a user
+DELETE http://localhost:8080/users/698ffab398bedb31d7700bb9
 Content-Type: application/json

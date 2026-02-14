@@ -3,6 +3,9 @@ const mongodb = require('../db/connect');
 
 // GET all audiobooks
 const getAllAudiobooks = async (req, res) => {
+  /*ERROR HANDLING - (runtime / database errors)
+  Making sure database connection issues are handled, and 
+   and that MongoDB query failures are handled.*/
   try {
     const result = await mongodb
       .getDb()
@@ -12,12 +15,15 @@ const getAllAudiobooks = async (req, res) => {
 
     res.status(200).json(result);
   } catch (err) {
+    // ERROR HANDLING (server-side / unexpected errors)
     res.status(500).json({ message: err.message });
   }
 };
 
 // GET audiobook by ID
 const getAudiobookById = async (req, res) => {
+  /* VALIDATION (input format):
+   - Ensures req.params.id can be converted into a valid MongoDB ObjectId  */
   try {
     const audiobookId = new ObjectId(req.params.id);
 
@@ -26,11 +32,13 @@ const getAudiobookById = async (req, res) => {
       .collection('audiobooks')
       .findOne({ _id: audiobookId });
 
+    // ERROR HANDLING (resource not found)
     if (!result) {
       res.status(404).json({ message: 'Audiobook not found' });
     } else {
       res.status(200).json(result);
     }
+    // ERROR HANDLING (Invalid ObjectId format, Database errors)
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -50,7 +58,7 @@ const createAudiobook = async (req, res) => {
       description: req.body.description,
     };
 
-    // validation
+    // VALIDATION (Ensures all required audiobook fields are present)
     if (
       !audiobook.title ||
       !audiobook.author ||
@@ -70,6 +78,7 @@ const createAudiobook = async (req, res) => {
       .insertOne(audiobook);
 
     res.status(201).json({ id: response.insertedId });
+    // ERROR HANDLING (Database insert failure, Server/runtime errors)
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -77,6 +86,7 @@ const createAudiobook = async (req, res) => {
 
 // PUT update an audiobook
 const updateAudiobook = async (req, res) => {
+  // VALIDATION (input format: Validates MongoDB ObjectId format)
   try {
     const audiobookId = new ObjectId(req.params.id);
     const audiobook = {
@@ -95,11 +105,13 @@ const updateAudiobook = async (req, res) => {
       .collection('audiobooks')
       .replaceOne({ _id: audiobookId }, audiobook);
 
+    // ERROR HANDLING (Resource not found. ID was valid, but no document matched it)
     if (response.modifiedCount === 0) {
       res.status(404).json({ message: 'Audiobook not found' });
     } else {
       res.status(204).send();
     }
+    // ERROR HANDLING (Invalid ObjectId, Database failures)
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -107,6 +119,7 @@ const updateAudiobook = async (req, res) => {
 
 // Use DELETE to delete an audiobook
 const deleteAudiobook = async (req, res) => {
+  // VALIDATION (input format: Validates MongoDB ObjectId format)
   try {
     const audiobookId = new ObjectId(req.params.id);
     const response = await mongodb
@@ -114,11 +127,13 @@ const deleteAudiobook = async (req, res) => {
       .collection('audiobooks')
       .deleteOne({ _id: audiobookId });
 
+    // ERROR HANDLING (resource not found):
     if (response.deletedCount === 0) {
       res.status(404).json({ message: 'Audiobook not found' });
     } else {
       res.status(204).send();
     }
+    // ERROR HANDLING (Invalid ObjectId, Database failures)
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

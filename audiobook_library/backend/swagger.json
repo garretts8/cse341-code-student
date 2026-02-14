@@ -5,22 +5,20 @@
     "description": "Audiobook Library CRUD API",
     "version": "1.0.0"
   },
+  "host": "localhost:8080",
   "basePath": "/",
+  "schemes": ["http", "https"],
   "paths": {
     "/audiobooks": {
       "get": {
-        "summary": "Get all audiobooks",
+        "description": "Get all audiobooks",
         "responses": {
-          "200": {
-            "description": "List of audiobooks"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "200": { "description": "OK" },
+          "500": { "description": "Internal Server Error" }
         }
       },
       "post": {
-        "summary": "Create a new audiobook",
+        "description": "Create a new audiobook",
         "parameters": [
           {
             "name": "body",
@@ -28,57 +26,30 @@
             "required": true,
             "schema": {
               "type": "object",
-              "required": [
-                "title",
-                "author",
-                "listening_length",
-                "publisher",
-                "narrator",
-                "ASIN",
-                "audio_release_date",
-                "description"
-              ],
               "properties": {
-                "title": { "type": "string", "example": "Twilight" },
-                "author": { "type": "string", "example": "Stephenie Meyer" },
-                "listening_length": {
-                  "type": "string",
-                  "example": "12 hours and 51 minutes"
-                },
-                "publisher": {
-                  "type": "string",
-                  "example": "Listening Library"
-                },
-                "narrator": { "type": "string", "example": "Ilyana Kadushin" },
-                "ASIN": { "type": "string", "example": "B000BO2D64" },
-                "audio_release_date": {
-                  "type": "string",
-                  "example": "October 05, 2005"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "A vampire romance novel."
-                }
+                "title": { "example": "any" },
+                "author": { "example": "any" },
+                "listening_length": { "example": "any" },
+                "publisher": { "example": "any" },
+                "narrator": { "example": "any" },
+                "ASIN": { "example": "any" },
+                "audio_release_date": { "example": "any" },
+                "description": { "example": "any" }
               }
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Audiobook created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
         }
       }
     },
+
     "/audiobooks/{id}": {
       "get": {
-        "summary": "Get audiobook by ID",
+        "description": "Get audiobook by ID",
         "parameters": [
           {
             "name": "id",
@@ -88,19 +59,13 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Audiobook found"
-          },
-          "404": {
-            "description": "Audiobook not found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "200": { "description": "OK" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
         }
       },
       "put": {
-        "summary": "Update an audiobook",
+        "description": "Update audiobook by ID",
         "parameters": [
           {
             "name": "id",
@@ -115,32 +80,26 @@
             "schema": {
               "type": "object",
               "properties": {
-                "title": { "type": "string" },
-                "author": { "type": "string" },
-                "listening_length": { "type": "string" },
-                "publisher": { "type": "string" },
-                "narrator": { "type": "string" },
-                "ASIN": { "type": "string" },
-                "audio_release_date": { "type": "string" },
-                "description": { "type": "string" }
+                "title": { "example": "any" },
+                "author": { "example": "any" },
+                "listening_length": { "example": "any" },
+                "publisher": { "example": "any" },
+                "narrator": { "example": "any" },
+                "ASIN": { "example": "any" },
+                "audio_release_date": { "example": "any" },
+                "description": { "example": "any" }
               }
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Audiobook updated"
-          },
-          "404": {
-            "description": "Audiobook not found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "204": { "description": "No Content" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
         }
       },
       "delete": {
-        "summary": "Delete an audiobook",
+        "description": "Delete audiobook by ID",
         "parameters": [
           {
             "name": "id",
@@ -150,15 +109,119 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Audiobook deleted"
-          },
-          "404": {
-            "description": "Audiobook not found"
-          },
-          "500": {
-            "description": "Internal Server Error"
+          "204": { "description": "No Content" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/users": {
+      "get": {
+        "description": "Get all users",
+        "responses": {
+          "200": { "description": "OK" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "description": "Create a new user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "displayName": { "example": "any" },
+                "firstName": { "example": "any" },
+                "lastName": { "example": "any" },
+                "email": { "example": "any" },
+                "date": { "example": "any" }
+              }
+            }
           }
+        ],
+        "responses": {
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/users/{id}": {
+      "get": {
+        "description": "Get user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "put": {
+        "description": "Update user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "displayName": { "example": "any" },
+                "firstName": { "example": "any" },
+                "lastName": { "example": "any" },
+                "email": { "example": "any" },
+                "date": { "example": "any" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": { "description": "No Content" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "description": "Delete user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": { "description": "No Content" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/api-docs": {
+      "get": {
+        "description": "Swagger UI",
+        "responses": {
+          "200": { "description": "OK" }
         }
       }
     }
