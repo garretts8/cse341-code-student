@@ -58,6 +58,20 @@ const createAudiobook = async (req, res) => {
       description: req.body.description,
     };
 
+    /*  // VALIDATION - Check if ASIN already exists
+    Ensure an audiobook with the same ASIN cannot be created twice */
+    const existingAudiobook = await mongodb
+      .getDb()
+      .collection('audiobooks')
+      .findOne({ ASIN: audiobook.ASIN });
+
+    if (existingAudiobook) {
+      return res.status(409).json({
+        message:
+          'Audiobook with this ASIN already exists. ASIN must be unique.',
+      });
+    }
+
     // VALIDATION (Ensures all required audiobook fields are present)
     if (
       !audiobook.title ||
@@ -77,7 +91,10 @@ const createAudiobook = async (req, res) => {
       .collection('audiobooks')
       .insertOne(audiobook);
 
-    res.status(201).json({ id: response.insertedId });
+    res.status(201).json({
+      message: 'Audiobook created successfully',
+      id: response.insertedId,
+    });
     // ERROR HANDLING (Database insert failure, Server/runtime errors)
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -100,17 +117,42 @@ const updateAudiobook = async (req, res) => {
       description: req.body.description,
     };
 
+    /*  // VALIDATION - Check if ASIN already exists (excluding current audiobook)
+    Ensure an audiobook cannot be updated to an ASIN that's already in use */
+    if (req.body.ASIN) {
+      const existingAudiobook = await mongodb
+        .getDb()
+        .collection('audiobooks')
+        .findOne({
+          ASIN: audiobook.ASIN,
+          _id: { $ne: audiobookId }, // Exclude current audiobook
+        });
+
+      if (existingAudiobook) {
+        return res.status(409).json({
+          message:
+            'ASIN is already in use by another audiobook. ASIN must be unique.',
+        });
+      }
+    }
+
     const response = await mongodb
       .getDb()
       .collection('audiobooks')
       .replaceOne({ _id: audiobookId }, audiobook);
 
     // ERROR HANDLING (Resource not found. ID was valid, but no document matched it)
-    if (response.modifiedCount === 0) {
-      res.status(404).json({ message: 'Audiobook not found' });
-    } else {
-      res.status(204).send();
+    if (response.matchedCount === 0) {
+      return res.status(404).json({ message: 'Audiobook not found' });
     }
+
+    if (response.modifiedCount === 0) {
+      return res
+        .status(200)
+        .json({ message: 'Audiobook data is already up to date' });
+    }
+
+    res.status(200).json({ message: 'Audiobook updated successfully' });
     // ERROR HANDLING (Invalid ObjectId, Database failures)
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -131,7 +173,7 @@ const deleteAudiobook = async (req, res) => {
     if (response.deletedCount === 0) {
       res.status(404).json({ message: 'Audiobook not found' });
     } else {
-      res.status(204).send();
+      res.status(200).json({ message: 'Audiobook deleted successfully' });
     }
     // ERROR HANDLING (Invalid ObjectId, Database failures)
   } catch (err) {

@@ -8,7 +8,9 @@ Content-Type: application/json
 
 ### Get audiobook by ID
 # Replace {{id}} with a real MongoDB _id
-GET http://localhost:8080/audiobooks/698ff7ff98bedb31d7700bb3
+GET http://localhost:8080/audiobooks/6984293d7ce7232969cc867c
+
+
 
 Content-Type: application/json
 
@@ -17,33 +19,33 @@ POST http://localhost:8080/audiobooks
 Content-Type: application/json
 
 {
-  "title": "Scoobie-Doo",
+  "title": "Skylar Tucket",
   "author": "Dtephenie Meyer",
   "listening_length": "20 hours and 28 minutes",
   "publisher": "Listening Library",
   "narrator": "Ilyana Kadushin, Matt Walters",
-  "ASIN": "B001FD6RLM",
+  "ASIN": "B001FD6PLN",
   "audio_release_date": "September 02, 2008",
   "description": "To be irrevocably in love with a vampire is both fantasy and nightmare woven into a dangerously heightened reality for Bella Swan. Pulled in one direction by her intense passion for Edward Cullen, and in another by her profound connection to werewolf Jacob Black, she has endured a tumultuous year of temptation , loss, and strife to reach the ultimate turning point. Her imminent choice to either join the dark but seductive world of immortals or pursue a fully human life has become the thread from which the date of two tribes hangs."
 }
 
 ### Update an audiobook
-PUT http://localhost:8080/audiobooks/698ff7ff98bedb31d7700bb7
+PUT http://localhost:8080/audiobooks/699810b8112aaa318ae35d82
 Content-Type: application/json
 
 {
-  "title": "Scooby-Doo!",
+  "title": "Skylar Tucket",
   "author": "Stephenie Meyer",
   "listening_length": "20 hours and 28 minutes",
   "publisher": "Listening Library",
   "narrator": "Ilyana Kadushin, Matt Walters",
-  "ASIN": "B001FD6RLM",
+  "ASIN": "B001FD6PLN",
   "audio_release_date": "September 02, 2008",
   "description": "To be irrevocably in love with a vampire is both fantasy and nightmare woven into a dangerously heightened reality for Bella Swan. Pulled in one direction by her intense passion for Edward Cullen, and in another by her profound connection to werewolf Jacob Black, she has endured a tumultuous year of temptation , loss, and strife to reach the ultimate turning point. Her imminent choice to either join the dark but seductive world of immortals or pursue a fully human life has become the thread from which the date of two tribes hangs."
 }
 
 ### Delete an audiobook
-DELETE http://localhost:8080/audiobooks/698ff96d98bedb31d7700bb8
+DELETE http://localhost:8080/audiobooks/699810b8112aaa318ae35d82
 Content-Type: application/json
 
 ### Get all users
@@ -52,12 +54,12 @@ GET http://localhost:8080/users
 ### Get user by ID
 GET http://localhost:8080/users/69843aa57ce7232969cc8688
 
+
 ### Create user
 POST http://localhost:8080/users
 Content-Type: application/json
 
 {
-    "_id": "69843aa57ce7232969cc8688",
     "googleId": "123456789012345678903",
     "displayName": "Jan Eyre",
     "firstName": "Jane",
@@ -68,7 +70,7 @@ Content-Type: application/json
 
 
 ### Update a user
-PUT http://localhost:8080/users/698ffab398bedb31d7700bb9
+PUT http://localhost:8080/users/699812ef112aaa318ae35d83
 Content-Type: application/json
 
 {
@@ -82,5 +84,20 @@ Content-Type: application/json
 }
 
 ### Delete a user
-DELETE http://localhost:8080/users/698ffab398bedb31d7700bb9
+DELETE http://localhost:8080/users/699812ef112aaa318ae35d83
 Content-Type: application/json
+
+
+### Create user
+# POST http://localhost:8080/auth/google
+# Content-Type: application/json
+
+# {
+#     "_id": "69843aa57ce7232969cc8688",
+#     "googleId": "123456789012345678903",
+#     "displayName": "Jane Eyre",
+#     "firstName": "Jane",
+#     "lastName": "Eyre",
+#     "email": "jane.eyre@gmail.com",
+#     "date": "01/10/2024"
+# }

@@ -7,6 +7,17 @@ const doc = {
   },
   host: process.env.HOST || 'localhost:8080',
   schemes: ['https', 'http'],
+
+  // Add JWT security
+  securityDefinitions: {
+    BearerAuth: {
+      type: 'apiKey',
+      name: 'Authorization',
+      in: 'header',
+      description: 'Enter your token as: Bearer <JWT>',
+    },
+  },
+  security: [{ BearerAuth: [] }],
 };
 
 const outputFile = './swagger.json';

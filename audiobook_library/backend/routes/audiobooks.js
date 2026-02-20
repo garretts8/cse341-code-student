@@ -1,23 +1,36 @@
 const routes = require('express').Router();
 const audiobookController = require('../controllers/audiobooks');
+const { audiobookValidationRules } = require('../middleware/validation');
 
 // GET all audiobooks
 routes.get('/', audiobookController.getAllAudiobooks);
 
-// GET a single audiobook by ID
-routes.get('/:id', audiobookController.getAudiobookById);
+// GET a single audiobook by ID (with validation)
+routes.get(
+  '/:id',
+  audiobookValidationRules.getById,
+  audiobookController.getAudiobookById,
+);
 
-// POST to create a new audiobook
-routes.post('/', audiobookController.createAudiobook);
+// POST to create a new audiobook (with validation)
+routes.post(
+  '/',
+  audiobookValidationRules.create,
+  audiobookController.createAudiobook,
+);
 
-// #swagger.tags = ['Audiobooks']
-// #swagger.parameters['id'] = { description: 'Audiobook ID' }
-// PUT to update a audiobook
-routes.put('/:id', audiobookController.updateAudiobook);
+// PUT to update an audiobook (with validation)
+routes.put(
+  '/:id',
+  audiobookValidationRules.update,
+  audiobookController.updateAudiobook,
+);
 
-// #swagger.tags = ['Audiobooks']
-// #swagger.parameters['id'] = { description: 'Audiobook ID' }
-// DELETE to delete a audiobook
-routes.delete('/:id', audiobookController.deleteAudiobook);
+// DELETE to delete an audiobook (with validation)
+routes.delete(
+  '/:id',
+  audiobookValidationRules.delete,
+  audiobookController.deleteAudiobook,
+);
 
 module.exports = routes;
