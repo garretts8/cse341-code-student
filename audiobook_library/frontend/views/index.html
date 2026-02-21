@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Listening Booth</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-header">
+          <i class="fas fa-headphones fa-3x"></i>
+          <h2>Welcome to The Listening Booth</h2>
+          <p>Sign in to start your audiobook journey</p>
+        </div>
+        <div class="modal-body">
+          <button id="googleLoginBtn" class="google-btn">
+            </i> LOG IN WITH GOOGLE
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-headphones"></i>
+          <span>The Listening Booth</span>
+        </div>
+        <div class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="#" class="nav-link active">Home</a></li>
+          <li><a href="#" class="nav-link">Categories</a></li>
+          <li><a href="#" class="nav-link">New Releases</a></li>
+          <li><a href="#" class="nav-link">Bestsellers</a></li>
+        </ul>
+        <div class="nav-icons">
+          <i class="fas fa-search"></i>
+          <i class="fas fa-user" id="userIcon"></i>
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Discover Your Next Great Listen</h1>
+        <p>Thousands of audiobooks waiting for you</p>
+        <button class="btn-primary" id="ctaButton">Start Listening</button>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <h3>The Listening Booth</h3>
+          <p>Your premier destination for audiobooks</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 The Listening Booth</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

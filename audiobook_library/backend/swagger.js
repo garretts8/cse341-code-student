@@ -3,24 +3,38 @@ const swaggerAutogen = require('swagger-autogen')();
 const doc = {
   info: {
     title: 'Audiobook Library API',
-    description: 'Audiobook Library CRUD API',
+    description: 'Audiobook Library CRUD API with Google OAuth Authentication',
+    version: '1.0.0',
   },
   host: process.env.HOST || 'localhost:8080',
-  schemes: ['https', 'http'],
+  schemes: ['http', 'https'],
 
-  // Add JWT security
+  // Add OAuth2 security definition
   securityDefinitions: {
-    BearerAuth: {
+    googleOAuth2: {
+      type: 'oauth2',
+      flow: 'implicit',
+      authorizationUrl: '/auth/google',
+      scopes: {
+        profile: 'Access your profile information',
+        email: 'Access your email address',
+      },
+    },
+    cookieAuth: {
       type: 'apiKey',
-      name: 'Authorization',
-      in: 'header',
-      description: 'Enter your token as: Bearer <JWT>',
+      in: 'cookie',
+      name: 'connect.sid',
+      description: 'Session cookie for authentication',
     },
   },
-  security: [{ BearerAuth: [] }],
+  security: [{ cookieAuth: [] }],
 };
 
 const outputFile = './swagger.json';
-const endpointsFiles = ['./routes/audiobooks.js', './routes/users.js'];
+const endpointsFiles = [
+  './routes/audiobooks.js',
+  './routes/users.js',
+  './routes/auth.js',
+];
 
 swaggerAutogen(outputFile, endpointsFiles, doc);
