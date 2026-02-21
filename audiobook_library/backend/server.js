@@ -15,6 +15,8 @@ dotenv.config({ paths: './.env' });
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+app.set('trust proxy', 1);
+
 // Session configuration
 app.use(cookieParser());
 app.use(
@@ -47,7 +49,10 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === 'production'
-        ? ['https://your-render-app.onrender.com', 'http://localhost:8080']
+        ? [
+            'https://cse341-code-student-1.onrender.com',
+            'http://localhost:8080',
+          ]
         : 'http://localhost:8080',
     credentials: true,
   }),
