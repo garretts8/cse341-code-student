@@ -6,8 +6,13 @@ const doc = {
     description: 'Audiobook Library CRUD API with Google OAuth Authentication',
     version: '1.0.0',
   },
-  host: process.env.HOST || 'localhost:8080',
-  schemes: ['http', 'https'],
+  // Use Render URL in production, localhost in development
+  host:
+    process.env.NODE_ENV === 'production'
+      ? 'cse341-code-student-1.onrender.com'
+      : process.env.HOST || 'localhost:8080',
+  schemes:
+    process.env.NODE_ENV === 'production' ? ['https'] : ['http', 'https'],
 
   // Add OAuth2 security definition
   securityDefinitions: {
