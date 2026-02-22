@@ -49,7 +49,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use(
   cors({
     origin:
-      process.env.NODE_ENV === 'production'
+      process.env.RENDER === 'true' || process.env.NODE_ENV === 'production'
         ? [
             'https://cse341-code-student-1.onrender.com',
             'http://localhost:8080',
