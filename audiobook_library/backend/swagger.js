@@ -8,11 +8,10 @@ const doc = {
   },
   // Use Render URL in production, localhost in development
   host:
-    process.env.NODE_ENV === 'production'
+    process.env.RENDER === 'true'
       ? 'cse341-code-student-1.onrender.com'
       : process.env.HOST || 'localhost:8080',
-  schemes:
-    process.env.NODE_ENV === 'production' ? ['https'] : ['http', 'https'],
+  schemes: process.env.RENDER === 'true' ? ['https'] : ['http', 'https'],
 
   // Add OAuth2 security definition
   securityDefinitions: {
