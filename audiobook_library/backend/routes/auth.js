@@ -1,7 +1,9 @@
 const router = require('express').Router();
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
 const mongodb = require('../db/connect');
 const { ObjectId } = require('mongodb');
+const keys = require('../config/keys');
 
 // @desc    Auth with Google
 // @route   GET /auth/google
@@ -21,25 +23,50 @@ router.get(
     session: true,
   }),
   (req, res) => {
-    // Successful authentication, redirect to home page with success message
+    // Successful authentication
     console.log('Authentication successful, redirecting to home');
 
-    // Set a cookie to indicate logged in status for frontend
+    // Create JWT token
+    const token = jwt.sign(
+      {
+        id: req.user._id,
+        email: req.user.email,
+        displayName: req.user.displayName,
+      },
+      process.env.JWT_SECRET || keys.session.SECRET,
+      { expiresIn: '24h' },
+    );
+
+    // Set cookies
     res.cookie('isLoggedIn', 'true', {
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      httpOnly: false, // Allow JavaScript to read it
+      httpOnly: false,
+      secure: keys.isProduction,
+      sameSite: keys.isProduction ? 'none' : 'lax',
     });
 
     res.cookie('userName', req.user.displayName, {
       maxAge: 24 * 60 * 60 * 1000,
       httpOnly: false,
+      secure: keys.isProduction,
+      sameSite: keys.isProduction ? 'none' : 'lax',
     });
 
     res.cookie('userId', req.user._id.toString(), {
       maxAge: 24 * 60 * 60 * 1000,
       httpOnly: false,
+      secure: keys.isProduction,
+      sameSite: keys.isProduction ? 'none' : 'lax',
     });
 
+    res.cookie('token', token, {
+      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true, // Cannot be accessed by JavaScript
+      secure: keys.isProduction,
+      sameSite: keys.isProduction ? 'none' : 'lax',
+    });
+
+    // Redirect to home page
     res.redirect('/');
   },
 );
@@ -49,6 +76,7 @@ router.get(
 router.get('/me', (req, res) => {
   if (req.isAuthenticated && req.isAuthenticated()) {
     res.status(200).json({
+      success: true,
       isAuthenticated: true,
       user: {
         _id: req.user._id,
@@ -57,10 +85,35 @@ router.get('/me', (req, res) => {
         lastName: req.user.lastName,
         email: req.user.email,
         profilePhoto: req.user.profilePhoto,
+        date: req.user.date,
       },
     });
   } else {
-    res.status(200).json({ isAuthenticated: false });
+    // Check for JWT token
+    const token = req.cookies.token;
+    if (token) {
+      try {
+        const decoded = jwt.verify(
+          token,
+          process.env.JWT_SECRET || keys.session.SECRET,
+        );
+        res.status(200).json({
+          success: true,
+          isAuthenticated: true,
+          user: decoded,
+        });
+      } catch (err) {
+        res.status(200).json({
+          success: true,
+          isAuthenticated: false,
+        });
+      }
+    } else {
+      res.status(200).json({
+        success: true,
+        isAuthenticated: false,
+      });
+    }
   }
 });
 
@@ -77,7 +130,9 @@ router.get('/logout', (req, res) => {
     res.clearCookie('isLoggedIn');
     res.clearCookie('userName');
     res.clearCookie('userId');
+    res.clearCookie('token');
 
+    // Redirect to home page
     res.redirect('/');
   });
 });
@@ -87,29 +142,34 @@ router.get('/logout', (req, res) => {
 router.get('/login-failed', (req, res) => {
   res.status(401).send(`
     <html>
-      <head><title>Login Failed</title></head>
-      <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
-        <h1>Login Failed</h1>
-        <p>Unable to authenticate with Google. Please try again.</p>
-        <a href="/" style="display: inline-block; padding: 10px 20px; background: #4a90e2; color: white; text-decoration: none; border-radius: 5px;">Return to Home</a>
+      <head>
+        <title>Login Failed</title>
+        <style>
+          body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+          .container { max-width: 500px; margin: 0 auto; }
+          h1 { color: #e74c3c; }
+          .btn { display: inline-block; padding: 10px 20px; background: #4a90e2; color: white; text-decoration: none; border-radius: 5px; margin-top: 20px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Login Failed</h1>
+          <p>Unable to authenticate with Google. Please try again.</p>
+          <a href="/" class="btn">Return to Home</a>
+        </div>
       </body>
     </html>
   `);
 });
 
-// @desc    Get all users (protected - admin only in production)
+// @desc    Get all users (protected)
 // @route   GET /auth/users
 router.get('/users', async (req, res) => {
   try {
-    // Check if user is authenticated (optional - you can remove this for development)
-    // if (!req.isAuthenticated || !req.isAuthenticated()) {
-    //   return res.status(401).json({ message: 'Not authenticated' });
-    // }
-
     const db = mongodb.getDb();
     const users = await db.collection('users').find().toArray();
 
-    // Remove sensitive information if needed
+    // Remove sensitive information
     const sanitizedUsers = users.map((user) => ({
       _id: user._id,
       googleId: user.googleId,
@@ -122,10 +182,17 @@ router.get('/users', async (req, res) => {
       lastLogin: user.lastLogin,
     }));
 
-    res.status(200).json(sanitizedUsers);
+    res.status(200).json({
+      success: true,
+      count: sanitizedUsers.length,
+      data: sanitizedUsers,
+    });
   } catch (err) {
     console.error('Error fetching users:', err);
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 });
 
@@ -133,17 +200,62 @@ router.get('/users', async (req, res) => {
 // @route   GET /auth/users/:id
 router.get('/users/:id', async (req, res) => {
   try {
+    if (!ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid user ID format',
+      });
+    }
+
     const userId = new ObjectId(req.params.id);
     const db = mongodb.getDb();
     const user = await db.collection('users').findOne({ _id: userId });
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
     }
 
-    res.status(200).json(user);
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
+// @desc    Verify token
+// @route   GET /auth/verify
+router.get('/verify', (req, res) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: 'No token provided',
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || keys.session.SECRET,
+    );
+    res.status(200).json({
+      success: true,
+      user: decoded,
+    });
+  } catch (err) {
+    res.status(401).json({
+      success: false,
+      message: 'Invalid or expired token',
+    });
   }
 });
 

@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const cookieParser = require('cookie-parser');
 const passport = require('./config/passport');
 const mongodb = require('./db/connect');
@@ -14,27 +15,34 @@ dotenv.config({ paths: './.env' });
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+const isProduction = keys.isProduction;
 
 app.set('trust proxy', 1);
 
-// Session configuration
+// Session configuration with MongoDB store for production
+const sessionConfig = {
+  secret: keys.session.SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    secure: isProduction, // HTTPS in production
+    httpOnly: true,
+    sameSite: isProduction ? 'none' : 'lax',
+  },
+};
+
+// Use MongoDB to store sessions in production
+if (isProduction) {
+  sessionConfig.store = MongoStore.create({
+    mongoUrl: process.env.MONGO_URL,
+    collectionName: 'sessions',
+    ttl: 24 * 60 * 60, // 24 hours
+  });
+}
+
 app.use(cookieParser());
-app.use(
-  session({
-    secret: keys.session.SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      // 24 hours
-      maxAge: 24 * 60 * 60 * 1000,
-      // HTTPS in production
-      secure:
-        process.env.RENDER === 'true' || process.env.NODE_ENV === 'production',
-      httpOnly: true,
-      sameSite: 'lax',
-    },
-  }),
-);
+app.use(session(sessionConfig));
 
 // Initialize Passport
 app.use(passport.initialize());
@@ -45,19 +53,22 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// CORS configuration
+const corsOptions = {
+  origin: isProduction
+    ? [
+        'https://cse341-code-student-1.onrender.com',
+        'https://cse341-code-student-1.onrender.com', // Add your actual Render URL
+      ]
+    : ['http://localhost:8080', 'http://localhost:3000'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+};
+
+app.use(cors(corsOptions));
+
 // Middleware
-app.use(
-  cors({
-    origin:
-      process.env.RENDER === 'true' || process.env.NODE_ENV === 'production'
-        ? [
-            'https://cse341-code-student-1.onrender.com',
-            'http://localhost:8080',
-          ]
-        : 'http://localhost:8080',
-    credentials: true,
-  }),
-);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -67,16 +78,35 @@ app.use('/css', express.static(path.join(__dirname, '../frontend/css')));
 app.use('/js', express.static(path.join(__dirname, '../frontend/js')));
 app.use('/images', express.static(path.join(__dirname, '../frontend/images')));
 
+// Make user available to all templates
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
+  next();
+});
+
 // API routes
 app.use('/audiobooks', require('./routes/audiobooks'));
 app.use('/users', require('./routes/users'));
 app.use('/auth', require('./routes/auth'));
 
-// Swagger/API docs - KEEP THIS
+// Swagger/API docs
 app.use('/api-docs', require('./routes/swagger'));
 
-// Main index route handler - must come AFTER API routes
+// Main index route handler
 app.use('/', require('./routes/index'));
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route not found' });
+});
+
+// Error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res
+    .status(500)
+    .json({ message: 'Something went wrong!', error: err.message });
+});
 
 // Start server
 mongodb
@@ -84,7 +114,7 @@ mongodb
   .then(() => {
     app.listen(PORT, () => {
       console.log(
-        `Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`,
+        `Server running in ${isProduction ? 'production' : 'development'} mode on port ${PORT}`,
       );
       console.log(`Frontend available at: http://localhost:${PORT}`);
       console.log(`API endpoints:`);
