@@ -1,6 +1,10 @@
 const routes = require('express').Router();
 const userController = require('../controllers/users');
 const { userValidationRules } = require('../middleware/validation');
+const { isAuthenticated } = require('../middleware/auth');
+
+// All user routes should be protected
+routes.use(isAuthenticated);
 
 // GET all users
 routes.get('/', userController.getAllUsers);

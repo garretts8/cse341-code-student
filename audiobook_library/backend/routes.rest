@@ -74,13 +74,14 @@ PUT http://localhost:8080/users/699812ef112aaa318ae35d83
 Content-Type: application/json
 
 {
-    "_id": "69843aa57ce7232969cc8688",
-    "googleId": "123456789012345678903",
-    "displayName": "Jane Eyre",
-    "firstName": "Jane",
-    "lastName": "Eyre",
-    "email": "jane.eyre@gmail.com",
-    "date": "01/10/2024"
+    "_id": "699cdc237263b2086f531188",
+    "displayName": "Mitchelle Garrett",
+    "firstName": "Mitchelle",
+    "lastName": "Garrett",
+    "email": "magarrett77@gmail.com",
+    "profilePhoto": "https://lh3.googleusercontent.com/a/ACg8ocKbBo_B4OU_3G3IAWswJVIwoEV0uBskK7XTMJqSRzproQMLpA=s96-c",
+    "date": "02/23/2026"
+  
 }
 
 ### Delete a user
