@@ -15,9 +15,7 @@ const doc = {
       email: 'support@audiobooklibrary.com',
     },
   },
-  host: isProduction
-    ? 'https://cse341-code-student-1.onrender.com'
-    : 'localhost:8080',
+  host: isProduction ? 'cse341-code-student-1.onrender.com' : 'localhost:8080',
   basePath: '/',
   schemes: isProduction ? ['https'] : ['http', 'https'],
   consumes: ['application/json'],
