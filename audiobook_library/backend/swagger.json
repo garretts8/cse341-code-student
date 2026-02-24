@@ -25,10 +25,7 @@
       "description": "Google OAuth authentication endpoints"
     }
   ],
-  "schemes": [
-    "http",
-    "https"
-  ],
+  "schemes": ["http", "https"],
   "securityDefinitions": {
     "googleOAuth2": {
       "type": "oauth2",
@@ -52,920 +49,532 @@
       "description": "JWT token (format: Bearer <token>)"
     }
   },
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "security": [{ "cookieAuth": [] }, { "bearerAuth": [] }],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
-    "/": {
+    "/audiobooks": {
       "get": {
-        "description": "",
+        "tags": ["Audiobooks"],
+        "summary": "Get all audiobooks",
+        "description": "Retrieves a list of all audiobooks",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "6984291c7ce7232969cc8678"
+                  },
+                  "title": { "type": "string", "example": "The Historian" },
+                  "author": {
+                    "type": "string",
+                    "example": "Elizabeth Kostova"
+                  },
+                  "listening_length": {
+                    "type": "string",
+                    "example": "26 hours and 6 minutes"
+                  },
+                  "publisher": {
+                    "type": "string",
+                    "example": "Random House Audio"
+                  },
+                  "narrator": {
+                    "type": "string",
+                    "example": "Justine Eyre, Paul Michael"
+                  },
+                  "ASIN": { "type": "string", "example": "JB000E0LDRU" },
+                  "audio_release_date": {
+                    "type": "string",
+                    "example": "November 30, 2010"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "The record-breaking phenomenon from Elizabeth Kostova..."
+                  }
+                }
+              }
+            }
           },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "500": { "description": "Server error" }
         }
       },
       "post": {
-        "description": "",
+        "tags": ["Audiobooks"],
+        "summary": "Create a new audiobook",
+        "description": "Adds a new audiobook to the library",
         "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
+              "required": [
+                "title",
+                "author",
+                "listening_length",
+                "publisher",
+                "narrator",
+                "ASIN",
+                "audio_release_date",
+                "description"
+              ],
               "properties": {
-                "googleId": {
-                  "example": "any"
-                },
-                "displayName": {
-                  "example": "any"
-                },
-                "firstName": {
-                  "example": "any"
-                },
-                "lastName": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "date": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "409": {
-            "description": "Conflict"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "googleId": {
-                  "example": "any"
-                },
-                "displayName": {
-                  "example": "any"
-                },
-                "firstName": {
-                  "example": "any"
-                },
-                "lastName": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "date": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "409": {
-            "description": "Conflict"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/google": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/google/callback": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/me": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/logout": {
-      "get": {
-        "description": "",
-        "responses": {
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/login-failed": {
-      "get": {
-        "description": "",
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/users": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/users/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "1": {
-            "description": ""
-          },
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "googleId": {
-                  "example": "any"
-                },
-                "displayName": {
-                  "example": "any"
-                },
-                "firstName": {
-                  "example": "any"
-                },
-                "lastName": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "date": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "1": {
-            "description": ""
-          },
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "409": {
-            "description": "Conflict"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "1": {
-            "description": ""
-          },
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/verify": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/audiobooks/": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "1": {
-            "description": ""
-          },
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "example": "any"
-                },
-                "author": {
-                  "example": "any"
-                },
+                "title": { "type": "string", "example": "New Audiobook Title" },
+                "author": { "type": "string", "example": "Author Name" },
                 "listening_length": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "10 hours and 30 minutes"
                 },
-                "publisher": {
-                  "example": "any"
-                },
-                "narrator": {
-                  "example": "any"
-                },
-                "ASIN": {
-                  "example": "any"
-                },
+                "publisher": { "type": "string", "example": "Publisher Name" },
+                "narrator": { "type": "string", "example": "Narrator Name" },
+                "ASIN": { "type": "string", "example": "B0123456789" },
                 "audio_release_date": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "January 15, 2024"
                 },
                 "description": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "A captivating story about..."
                 }
               }
             }
           }
         ],
         "responses": {
-          "1": {
-            "description": ""
-          },
-          "200": {
-            "description": "OK"
-          },
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Audiobook created successfully"
+                },
+                "id": {
+                  "type": "string",
+                  "example": "6984291c7ce7232969cc8678"
+                }
+              }
+            }
           },
-          "400": {
-            "description": "Bad Request"
-          },
-          "409": {
-            "description": "Conflict"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "400": { "description": "Bad request - validation error" },
+          "409": { "description": "Conflict - ASIN already exists" },
+          "500": { "description": "Server error" }
         }
       }
     },
     "/audiobooks/{id}": {
       "get": {
-        "description": "",
+        "tags": ["Audiobooks"],
+        "summary": "Get audiobook by ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
+            "type": "string",
+            "example": "6984291c7ce7232969cc8678"
           }
         ],
         "responses": {
-          "1": {
-            "description": ""
-          },
           "200": {
-            "description": "OK"
+            "description": "Success",
+            "schema": { "$ref": "#/definitions/Audiobook" }
           },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "404": { "description": "Audiobook not found" },
+          "500": { "description": "Server error" }
         }
       },
       "put": {
-        "description": "",
+        "tags": ["Audiobooks"],
+        "summary": "Update audiobook",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
+            "type": "string",
+            "example": "6984291c7ce7232969cc8678"
           },
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "title": {
-                  "example": "any"
-                },
-                "author": {
-                  "example": "any"
-                },
-                "listening_length": {
-                  "example": "any"
-                },
+                "title": { "type": "string", "example": "Updated Title" },
+                "author": { "type": "string", "example": "Updated Author" },
+                "listening_length": { "type": "string", "example": "12 hours" },
                 "publisher": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Updated Publisher"
                 },
-                "narrator": {
-                  "example": "any"
-                },
-                "ASIN": {
-                  "example": "any"
-                },
+                "narrator": { "type": "string", "example": "Updated Narrator" },
+                "ASIN": { "type": "string", "example": "B0987654321" },
                 "audio_release_date": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "February 20, 2024"
                 },
                 "description": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Updated description..."
                 }
               }
             }
           }
         ],
         "responses": {
-          "1": {
-            "description": ""
-          },
           "200": {
-            "description": "OK"
+            "description": "Updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Audiobook updated successfully"
+                }
+              }
+            }
           },
-          "404": {
-            "description": "Not Found"
-          },
-          "409": {
-            "description": "Conflict"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "404": { "description": "Audiobook not found" },
+          "409": { "description": "Conflict - ASIN already exists" },
+          "500": { "description": "Server error" }
         }
       },
       "delete": {
-        "description": "",
+        "tags": ["Audiobooks"],
+        "summary": "Delete audiobook",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
+            "type": "string",
+            "example": "6984291c7ce7232969cc8678"
           }
         ],
         "responses": {
-          "1": {
-            "description": ""
-          },
           "200": {
-            "description": "OK"
+            "description": "Deleted",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Audiobook deleted successfully"
+                }
+              }
+            }
           },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "404": { "description": "Audiobook not found" },
+          "500": { "description": "Server error" }
         }
       }
     },
-    "/users/": {
+    "/users": {
       "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
+        "tags": ["Users"],
+        "summary": "Get all users",
+        "description": "Retrieves all users (requires authentication)",
         "responses": {
-          "1": {
-            "description": ""
-          },
           "200": {
-            "description": "OK"
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "69843aa57ce7232969cc8688"
+                  },
+                  "googleId": {
+                    "type": "string",
+                    "example": "123456789012345678901"
+                  },
+                  "displayName": { "type": "string", "example": "John Smith" },
+                  "firstName": { "type": "string", "example": "John" },
+                  "lastName": { "type": "string", "example": "Smith" },
+                  "email": {
+                    "type": "string",
+                    "example": "john.smith@gmail.com"
+                  },
+                  "date": { "type": "string", "example": "01/10/2024" }
+                }
+              }
+            }
           },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Server error" }
         }
       },
       "post": {
-        "description": "",
+        "tags": ["Users"],
+        "summary": "Create a new user",
+        "description": "Adds a new user (requires authentication)",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "googleId",
+                "displayName",
+                "firstName",
+                "lastName",
+                "email",
+                "date"
+              ],
+              "properties": {
+                "googleId": {
+                  "type": "string",
+                  "example": "123456789012345678901"
+                },
+                "displayName": { "type": "string", "example": "Jane Doe" },
+                "firstName": { "type": "string", "example": "Jane" },
+                "lastName": { "type": "string", "example": "Doe" },
+                "email": { "type": "string", "example": "jane.doe@gmail.com" },
+                "date": { "type": "string", "example": "02/15/2024" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User created successfully"
+                },
+                "id": {
+                  "type": "string",
+                  "example": "69843aa57ce7232969cc8688"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request - validation error" },
+          "401": { "description": "Unauthorized" },
+          "409": { "description": "Conflict - email already exists" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "example": "69843aa57ce7232969cc8688"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": { "$ref": "#/definitions/User" }
+          },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "User not found" },
+          "500": { "description": "Server error" }
+        }
+      },
+      "put": {
+        "tags": ["Users"],
+        "summary": "Update user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "example": "69843aa57ce7232969cc8688"
           },
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "googleId": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "123456789012345678901"
                 },
-                "displayName": {
-                  "example": "any"
-                },
-                "firstName": {
-                  "example": "any"
-                },
-                "lastName": {
-                  "example": "any"
-                },
+                "displayName": { "type": "string", "example": "John Updated" },
+                "firstName": { "type": "string", "example": "John" },
+                "lastName": { "type": "string", "example": "Updated" },
                 "email": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "john.updated@gmail.com"
                 },
-                "date": {
-                  "example": "any"
-                }
+                "date": { "type": "string", "example": "02/20/2024" }
               }
             }
           }
         ],
         "responses": {
-          "1": {
-            "description": ""
-          },
           "200": {
-            "description": "OK"
+            "description": "Updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User updated successfully"
+                }
+              }
+            }
           },
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "409": {
-            "description": "Conflict"
-          },
-          "500": {
-            "description": "Internal Server Error"
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "User not found" },
+          "409": { "description": "Conflict - email already exists" },
+          "500": { "description": "Server error" }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "example": "69843aa57ce7232969cc8688"
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User deleted successfully"
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "User not found" },
+          "500": { "description": "Server error" }
         }
       }
     },
     "/auth/google": {
       "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
+        "tags": ["Authentication"],
+        "summary": "Authenticate with Google",
+        "description": "Redirects to Google OAuth consent screen",
         "responses": {
-          "1": {
-            "description": ""
-          },
-          "200": {
-            "description": "OK"
-          }
+          "302": { "description": "Redirect to Google" }
         }
       }
     },
     "/auth/google/callback": {
       "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
+        "tags": ["Authentication"],
+        "summary": "Google OAuth callback",
+        "description": "Callback URL for Google OAuth",
         "responses": {
-          "1": {
-            "description": ""
-          },
-          "200": {
-            "description": "OK"
-          }
+          "302": { "description": "Redirect to home page on success" },
+          "401": { "description": "Authentication failed" }
         }
       }
     },
     "/auth/me": {
       "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
+        "tags": ["Authentication"],
+        "summary": "Get current user",
+        "description": "Returns the currently authenticated user",
         "responses": {
-          "1": {
-            "description": ""
-          },
           "200": {
-            "description": "OK"
-          }
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": { "type": "boolean", "example": true },
+                "isAuthenticated": { "type": "boolean", "example": true },
+                "user": { "$ref": "#/definitions/User" }
+              }
+            }
+          },
+          "401": { "description": "Not authenticated" }
         }
       }
     },
     "/auth/logout": {
       "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
+        "tags": ["Authentication"],
+        "summary": "Logout",
+        "description": "Logs out the current user",
         "responses": {
-          "1": {
-            "description": ""
-          },
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "302": { "description": "Redirect to home page" },
+          "500": { "description": "Server error" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Audiobook": {
+      "type": "object",
+      "properties": {
+        "_id": { "type": "string", "example": "6984291c7ce7232969cc8678" },
+        "title": { "type": "string", "example": "The Historian" },
+        "author": { "type": "string", "example": "Elizabeth Kostova" },
+        "listening_length": {
+          "type": "string",
+          "example": "26 hours and 6 minutes"
+        },
+        "publisher": { "type": "string", "example": "Random House Audio" },
+        "narrator": {
+          "type": "string",
+          "example": "Justine Eyre, Paul Michael"
+        },
+        "ASIN": { "type": "string", "example": "JB000E0LDRU" },
+        "audio_release_date": {
+          "type": "string",
+          "example": "November 30, 2010"
+        },
+        "description": {
+          "type": "string",
+          "example": "The record-breaking phenomenon from Elizabeth Kostova..."
         }
       }
     },
-    "/auth/login-failed": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "1": {
-            "description": ""
-          },
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/auth/users": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "1": {
-            "description": ""
-          },
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/auth/users/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "1": {
-            "description": ""
-          },
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/auth/verify": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "1": {
-            "description": ""
-          },
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/api-docs/": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "1": {
-            "description": ""
-          },
-          "200": {
-            "description": "OK"
-          }
-        }
+    "User": {
+      "type": "object",
+      "properties": {
+        "_id": { "type": "string", "example": "69843aa57ce7232969cc8688" },
+        "googleId": { "type": "string", "example": "123456789012345678901" },
+        "displayName": { "type": "string", "example": "John Smith" },
+        "firstName": { "type": "string", "example": "John" },
+        "lastName": { "type": "string", "example": "Smith" },
+        "email": { "type": "string", "example": "john.smith@gmail.com" },
+        "date": { "type": "string", "example": "01/10/2024" },
+        "profilePhoto": {
+          "type": "string",
+          "example": "https://example.com/photo.jpg"
+        },
+        "lastLogin": { "type": "string", "example": "01/10/2024" }
       }
     }
   }
