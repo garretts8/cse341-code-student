@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const mongodb = require('../db/connect');
 const { ObjectId } = require('mongodb');
 const keys = require('../config/keys');
+const { isAuthenticated } = require('../middleware/auth');
 
 // @desc    Auth with Google
 // @route   GET /auth/google
@@ -164,7 +165,7 @@ router.get('/login-failed', (req, res) => {
 
 // @desc    Get all users (protected)
 // @route   GET /auth/users
-router.get('/users', async (req, res) => {
+router.get('/users', isAuthenticated, async (req, res) => {
   try {
     const db = mongodb.getDb();
     const users = await db.collection('users').find().toArray();

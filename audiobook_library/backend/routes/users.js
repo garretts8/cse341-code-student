@@ -1,6 +1,7 @@
 const routes = require('express').Router();
 const userController = require('../controllers/users');
 const { userValidationRules } = require('../middleware/validation');
+const { isAuthenticated } = require('../middleware/auth');
 
 // GET all users
 routes.get('/', userController.getAllUsers);
@@ -9,12 +10,27 @@ routes.get('/', userController.getAllUsers);
 routes.get('/:id', userValidationRules.getById, userController.getUserById);
 
 // POST to create a new user (with validation)
-routes.post('/', userValidationRules.create, userController.createUser);
+routes.post(
+  '/',
+  isAuthenticated,
+  userValidationRules.create,
+  userController.createUser,
+);
 
 // PUT to update a user (with validation)
-routes.put('/:id', userValidationRules.update, userController.updateUser);
+routes.put(
+  '/:id',
+  isAuthenticated,
+  userValidationRules.update,
+  userController.updateUser,
+);
 
 // DELETE to delete a user (with validation)
-routes.delete('/:id', userValidationRules.delete, userController.deleteUser);
+routes.delete(
+  '/:id',
+  isAuthenticated,
+  userValidationRules.delete,
+  userController.deleteUser,
+);
 
 module.exports = routes;
