@@ -2,29 +2,11 @@
   "swagger": "2.0",
   "info": {
     "title": "Audiobook Library API",
-    "description": "Complete Audiobook Library CRUD API with Google OAuth Authentication",
-    "version": "1.0.0",
-    "contact": {
-      "name": "API Support",
-      "email": "support@audiobooklibrary.com"
-    }
+    "description": "Audiobook Library CRUD API",
+    "version": "1.0.0"
   },
   "host": "localhost:8080",
   "basePath": "/",
-  "tags": [
-    {
-      "name": "Audiobooks",
-      "description": "Audiobook management endpoints"
-    },
-    {
-      "name": "Users",
-      "description": "User management endpoints"
-    },
-    {
-      "name": "Authentication",
-      "description": "Google OAuth authentication endpoints"
-    }
-  ],
   "schemes": ["http", "https"],
   "securityDefinitions": {
     "googleOAuth2": {
@@ -41,72 +23,24 @@
       "in": "cookie",
       "name": "connect.sid",
       "description": "Session cookie for authentication"
-    },
-    "bearerAuth": {
-      "type": "apiKey",
-      "in": "header",
-      "name": "Authorization",
-      "description": "JWT token (format: Bearer <token>)"
     }
   },
-  "security": [{ "cookieAuth": [] }, { "bearerAuth": [] }],
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "security": [
+    {
+      "cookieAuth": []
+    }
+  ],
   "paths": {
     "/audiobooks": {
       "get": {
-        "tags": ["Audiobooks"],
-        "summary": "Get all audiobooks",
-        "description": "Retrieves a list of all audiobooks",
+        "description": "Get all audiobooks",
         "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "_id": {
-                    "type": "string",
-                    "example": "6984291c7ce7232969cc8678"
-                  },
-                  "title": { "type": "string", "example": "The Historian" },
-                  "author": {
-                    "type": "string",
-                    "example": "Elizabeth Kostova"
-                  },
-                  "listening_length": {
-                    "type": "string",
-                    "example": "26 hours and 6 minutes"
-                  },
-                  "publisher": {
-                    "type": "string",
-                    "example": "Random House Audio"
-                  },
-                  "narrator": {
-                    "type": "string",
-                    "example": "Justine Eyre, Paul Michael"
-                  },
-                  "ASIN": { "type": "string", "example": "JB000E0LDRU" },
-                  "audio_release_date": {
-                    "type": "string",
-                    "example": "November 30, 2010"
-                  },
-                  "description": {
-                    "type": "string",
-                    "example": "The record-breaking phenomenon from Elizabeth Kostova..."
-                  }
-                }
-              }
-            }
-          },
-          "500": { "description": "Server error" }
+          "200": { "description": "OK" },
+          "500": { "description": "Internal Server Error" }
         }
       },
       "post": {
-        "tags": ["Audiobooks"],
-        "summary": "Create a new audiobook",
-        "description": "Adds a new audiobook to the library",
+        "description": "Create a new audiobook",
         "parameters": [
           {
             "name": "body",
@@ -114,93 +48,52 @@
             "required": true,
             "schema": {
               "type": "object",
-              "required": [
-                "title",
-                "author",
-                "listening_length",
-                "publisher",
-                "narrator",
-                "ASIN",
-                "audio_release_date",
-                "description"
-              ],
               "properties": {
-                "title": { "type": "string", "example": "New Audiobook Title" },
-                "author": { "type": "string", "example": "Author Name" },
-                "listening_length": {
-                  "type": "string",
-                  "example": "10 hours and 30 minutes"
-                },
-                "publisher": { "type": "string", "example": "Publisher Name" },
-                "narrator": { "type": "string", "example": "Narrator Name" },
-                "ASIN": { "type": "string", "example": "B0123456789" },
-                "audio_release_date": {
-                  "type": "string",
-                  "example": "January 15, 2024"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "A captivating story about..."
-                }
+                "title": { "example": "any" },
+                "author": { "example": "any" },
+                "listening_length": { "example": "any" },
+                "publisher": { "example": "any" },
+                "narrator": { "example": "any" },
+                "ASIN": { "example": "any" },
+                "audio_release_date": { "example": "any" },
+                "description": { "example": "any" }
               }
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Audiobook created successfully"
-                },
-                "id": {
-                  "type": "string",
-                  "example": "6984291c7ce7232969cc8678"
-                }
-              }
-            }
-          },
-          "400": { "description": "Bad request - validation error" },
-          "409": { "description": "Conflict - ASIN already exists" },
-          "500": { "description": "Server error" }
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
         }
       }
     },
+
     "/audiobooks/{id}": {
       "get": {
-        "tags": ["Audiobooks"],
-        "summary": "Get audiobook by ID",
+        "description": "Get audiobook by ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "example": "6984291c7ce7232969cc8678"
+            "type": "string"
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "schema": { "$ref": "#/definitions/Audiobook" }
-          },
-          "404": { "description": "Audiobook not found" },
-          "500": { "description": "Server error" }
+          "200": { "description": "OK" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
         }
       },
       "put": {
-        "tags": ["Audiobooks"],
-        "summary": "Update audiobook",
+        "description": "Update audiobook by ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "example": "6984291c7ce7232969cc8678"
+            "type": "string"
           },
           {
             "name": "body",
@@ -209,116 +102,52 @@
             "schema": {
               "type": "object",
               "properties": {
-                "title": { "type": "string", "example": "Updated Title" },
-                "author": { "type": "string", "example": "Updated Author" },
-                "listening_length": { "type": "string", "example": "12 hours" },
-                "publisher": {
-                  "type": "string",
-                  "example": "Updated Publisher"
-                },
-                "narrator": { "type": "string", "example": "Updated Narrator" },
-                "ASIN": { "type": "string", "example": "B0987654321" },
-                "audio_release_date": {
-                  "type": "string",
-                  "example": "February 20, 2024"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Updated description..."
-                }
+                "title": { "example": "any" },
+                "author": { "example": "any" },
+                "listening_length": { "example": "any" },
+                "publisher": { "example": "any" },
+                "narrator": { "example": "any" },
+                "ASIN": { "example": "any" },
+                "audio_release_date": { "example": "any" },
+                "description": { "example": "any" }
               }
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Updated",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Audiobook updated successfully"
-                }
-              }
-            }
-          },
-          "404": { "description": "Audiobook not found" },
-          "409": { "description": "Conflict - ASIN already exists" },
-          "500": { "description": "Server error" }
+          "204": { "description": "No Content" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
         }
       },
       "delete": {
-        "tags": ["Audiobooks"],
-        "summary": "Delete audiobook",
+        "description": "Delete audiobook by ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "example": "6984291c7ce7232969cc8678"
+            "type": "string"
           }
         ],
         "responses": {
-          "200": {
-            "description": "Deleted",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Audiobook deleted successfully"
-                }
-              }
-            }
-          },
-          "404": { "description": "Audiobook not found" },
-          "500": { "description": "Server error" }
+          "204": { "description": "No Content" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
         }
       }
     },
+
     "/users": {
       "get": {
-        "tags": ["Users"],
-        "summary": "Get all users",
-        "description": "Retrieves all users (requires authentication)",
+        "description": "Get all users",
         "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "_id": {
-                    "type": "string",
-                    "example": "69843aa57ce7232969cc8688"
-                  },
-                  "googleId": {
-                    "type": "string",
-                    "example": "123456789012345678901"
-                  },
-                  "displayName": { "type": "string", "example": "John Smith" },
-                  "firstName": { "type": "string", "example": "John" },
-                  "lastName": { "type": "string", "example": "Smith" },
-                  "email": {
-                    "type": "string",
-                    "example": "john.smith@gmail.com"
-                  },
-                  "date": { "type": "string", "example": "01/10/2024" }
-                }
-              }
-            }
-          },
-          "401": { "description": "Unauthorized" },
-          "500": { "description": "Server error" }
+          "200": { "description": "OK" },
+          "500": { "description": "Internal Server Error" }
         }
       },
       "post": {
-        "tags": ["Users"],
-        "summary": "Create a new user",
-        "description": "Adds a new user (requires authentication)",
+        "description": "Create a new user",
         "parameters": [
           {
             "name": "body",
@@ -326,85 +155,50 @@
             "required": true,
             "schema": {
               "type": "object",
-              "required": [
-                "googleId",
-                "displayName",
-                "firstName",
-                "lastName",
-                "email",
-                "date"
-              ],
               "properties": {
-                "googleId": {
-                  "type": "string",
-                  "example": "123456789012345678901"
-                },
-                "displayName": { "type": "string", "example": "Jane Doe" },
-                "firstName": { "type": "string", "example": "Jane" },
-                "lastName": { "type": "string", "example": "Doe" },
-                "email": { "type": "string", "example": "jane.doe@gmail.com" },
-                "date": { "type": "string", "example": "02/15/2024" }
+                "googleId": { "example": "any" },
+                "displayName": { "example": "any" },
+                "firstName": { "example": "any" },
+                "lastName": { "example": "any" },
+                "email": { "example": "any" },
+                "date": { "example": "any" }
               }
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "User created successfully"
-                },
-                "id": {
-                  "type": "string",
-                  "example": "69843aa57ce7232969cc8688"
-                }
-              }
-            }
-          },
-          "400": { "description": "Bad request - validation error" },
-          "401": { "description": "Unauthorized" },
-          "409": { "description": "Conflict - email already exists" },
-          "500": { "description": "Server error" }
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
         }
       }
     },
+
     "/users/{id}": {
       "get": {
-        "tags": ["Users"],
-        "summary": "Get user by ID",
+        "description": "Get user by ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "example": "69843aa57ce7232969cc8688"
+            "type": "string"
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "schema": { "$ref": "#/definitions/User" }
-          },
-          "401": { "description": "Unauthorized" },
-          "404": { "description": "User not found" },
-          "500": { "description": "Server error" }
+          "200": { "description": "OK" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
         }
       },
       "put": {
-        "tags": ["Users"],
-        "summary": "Update user",
+        "description": "Update user by ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "example": "69843aa57ce7232969cc8688"
+            "type": "string"
           },
           {
             "name": "body",
@@ -413,168 +207,106 @@
             "schema": {
               "type": "object",
               "properties": {
-                "googleId": {
-                  "type": "string",
-                  "example": "123456789012345678901"
-                },
-                "displayName": { "type": "string", "example": "John Updated" },
-                "firstName": { "type": "string", "example": "John" },
-                "lastName": { "type": "string", "example": "Updated" },
-                "email": {
-                  "type": "string",
-                  "example": "john.updated@gmail.com"
-                },
-                "date": { "type": "string", "example": "02/20/2024" }
+                "googleId": { "example": "any" },
+                "displayName": { "example": "any" },
+                "firstName": { "example": "any" },
+                "lastName": { "example": "any" },
+                "email": { "example": "any" },
+                "date": { "example": "any" }
               }
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Updated",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "User updated successfully"
-                }
-              }
-            }
-          },
-          "401": { "description": "Unauthorized" },
-          "404": { "description": "User not found" },
-          "409": { "description": "Conflict - email already exists" },
-          "500": { "description": "Server error" }
+          "204": { "description": "No Content" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
         }
       },
       "delete": {
-        "tags": ["Users"],
-        "summary": "Delete user",
+        "description": "Delete user by ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "example": "69843aa57ce7232969cc8688"
+            "type": "string"
           }
         ],
         "responses": {
-          "200": {
-            "description": "Deleted",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "User deleted successfully"
-                }
-              }
-            }
-          },
-          "401": { "description": "Unauthorized" },
-          "404": { "description": "User not found" },
-          "500": { "description": "Server error" }
+          "204": { "description": "No Content" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
         }
       }
     },
+
     "/auth/google": {
       "get": {
-        "tags": ["Authentication"],
-        "summary": "Authenticate with Google",
-        "description": "Redirects to Google OAuth consent screen",
+        "description": "Authenticate with Google",
         "responses": {
           "302": { "description": "Redirect to Google" }
         }
       }
     },
+
     "/auth/google/callback": {
       "get": {
-        "tags": ["Authentication"],
-        "summary": "Google OAuth callback",
-        "description": "Callback URL for Google OAuth",
+        "description": "Google OAuth callback",
         "responses": {
-          "302": { "description": "Redirect to home page on success" },
-          "401": { "description": "Authentication failed" }
+          "302": {
+            "description": "Redirect to home page on success, or login-failed on failure"
+          }
         }
       }
     },
+
     "/auth/me": {
       "get": {
-        "tags": ["Authentication"],
-        "summary": "Get current user",
-        "description": "Returns the currently authenticated user",
+        "description": "Get current authenticated user",
         "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": { "type": "boolean", "example": true },
-                "isAuthenticated": { "type": "boolean", "example": true },
-                "user": { "$ref": "#/definitions/User" }
-              }
-            }
-          },
-          "401": { "description": "Not authenticated" }
+          "200": { "description": "OK - Returns user info if authenticated" },
+          "401": { "description": "Unauthorized - Not logged in" }
         }
       }
     },
+
     "/auth/logout": {
       "get": {
-        "tags": ["Authentication"],
-        "summary": "Logout",
-        "description": "Logs out the current user",
+        "description": "Logout current user",
         "responses": {
           "302": { "description": "Redirect to home page" },
-          "500": { "description": "Server error" }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "Audiobook": {
-      "type": "object",
-      "properties": {
-        "_id": { "type": "string", "example": "6984291c7ce7232969cc8678" },
-        "title": { "type": "string", "example": "The Historian" },
-        "author": { "type": "string", "example": "Elizabeth Kostova" },
-        "listening_length": {
-          "type": "string",
-          "example": "26 hours and 6 minutes"
-        },
-        "publisher": { "type": "string", "example": "Random House Audio" },
-        "narrator": {
-          "type": "string",
-          "example": "Justine Eyre, Paul Michael"
-        },
-        "ASIN": { "type": "string", "example": "JB000E0LDRU" },
-        "audio_release_date": {
-          "type": "string",
-          "example": "November 30, 2010"
-        },
-        "description": {
-          "type": "string",
-          "example": "The record-breaking phenomenon from Elizabeth Kostova..."
+          "500": { "description": "Internal Server Error" }
         }
       }
     },
-    "User": {
-      "type": "object",
-      "properties": {
-        "_id": { "type": "string", "example": "69843aa57ce7232969cc8688" },
-        "googleId": { "type": "string", "example": "123456789012345678901" },
-        "displayName": { "type": "string", "example": "John Smith" },
-        "firstName": { "type": "string", "example": "John" },
-        "lastName": { "type": "string", "example": "Smith" },
-        "email": { "type": "string", "example": "john.smith@gmail.com" },
-        "date": { "type": "string", "example": "01/10/2024" },
-        "profilePhoto": {
-          "type": "string",
-          "example": "https://example.com/photo.jpg"
-        },
-        "lastLogin": { "type": "string", "example": "01/10/2024" }
+
+    "/auth/login-failed": {
+      "get": {
+        "description": "Login failed page",
+        "responses": {
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+
+    "/auth/users": {
+      "get": {
+        "description": "Get all users (protected)",
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+
+    "/api-docs": {
+      "get": {
+        "description": "Swagger UI",
+        "responses": {
+          "200": { "description": "OK" }
+        }
       }
     }
   }

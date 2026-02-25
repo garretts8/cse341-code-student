@@ -45,7 +45,7 @@ const doc = {
       description: 'JWT token (format: Bearer <token>)',
     },
   },
-  // security: [{ cookieAuth: [] }, { bearerAuth: [] }],
+  security: [{ cookieAuth: [] }, { bearerAuth: [] }],
 
   // Tags for grouping endpoints
   tags: [
@@ -66,17 +66,13 @@ const doc = {
 
 const outputFile = './swagger.json';
 const endpointsFiles = [
-  './routes/audiobooks.js',
-  './routes/users.js',
-  './routes/auth.js',
-  './routes/index.js',
+  path.join(__dirname, './routes/audiobooks.js'),
+  path.join(__dirname, './routes/users.js'),
+  path.join(__dirname, './routes/auth.js'),
+  path.join(__dirname, './routes/index.js'),
 ];
 
 // Generate swagger.json
-swaggerAutogen(outputFile, endpointsFiles, doc)
-  .then(() => {
-    console.log('Swagger documentation generated successfully');
-  })
-  .catch((err) => {
-    console.error('Error generating swagger:', err);
-  });
+swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
+  console.log('Swagger documentation generated successfully');
+});
