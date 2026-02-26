@@ -3,13 +3,18 @@ const userController = require('../controllers/users');
 const { userValidationRules } = require('../middleware/validation');
 const { isAuthenticated } = require('../middleware/auth');
 
-// GET all users
-routes.get('/', userController.getAllUsers);
+// GET all users (Protected)
+routes.get('/', isAuthenticated, userController.getAllUsers);
 
-// GET a single user by ID (with validation)
-routes.get('/:id', userValidationRules.getById, userController.getUserById);
+// GET a single user by ID (Protected)
+routes.get(
+  '/:id',
+  isAuthenticated,
+  userValidationRules.getById,
+  userController.getUserById,
+);
 
-// POST to create a new user (with validation)
+// POST to create a new user (Protected)
 routes.post(
   '/',
   isAuthenticated,
@@ -17,7 +22,7 @@ routes.post(
   userController.createUser,
 );
 
-// PUT to update a user (with validation)
+// PUT to update a user (Protected)
 routes.put(
   '/:id',
   isAuthenticated,
@@ -25,7 +30,7 @@ routes.put(
   userController.updateUser,
 );
 
-// DELETE to delete a user (with validation)
+// DELETE to delete a user (Protected)
 routes.delete(
   '/:id',
   isAuthenticated,

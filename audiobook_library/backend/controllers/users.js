@@ -139,7 +139,7 @@ const updateUser = async (req, res) => {
     const response = await mongodb
       .getDb()
       .collection('users')
-      .replaceOne({ _id: userId }, user);
+      .updateOne({ _id: userId }, { $set: user });
 
     /* ERROR HANDLING (404 Not Found)
     No user exists with the provided ID */

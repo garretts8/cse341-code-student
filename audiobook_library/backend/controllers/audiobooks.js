@@ -139,7 +139,7 @@ const updateAudiobook = async (req, res) => {
     const response = await mongodb
       .getDb()
       .collection('audiobooks')
-      .replaceOne({ _id: audiobookId }, audiobook);
+      .updateOne({ _id: audiobookId }, { $set: audiobook });
 
     // ERROR HANDLING (Resource not found. ID was valid, but no document matched it)
     if (response.matchedCount === 0) {

@@ -1,4 +1,4 @@
-const swaggerAutogen = require('swagger-autogen')();
+const swaggerAutogen = require('swagger-autogen')({ openapi: '3.0.0' });
 const path = require('path');
 const keys = require('./config/keys');
 
@@ -21,17 +21,7 @@ const doc = {
   consumes: ['application/json'],
   produces: ['application/json'],
 
-  // Security definitions
   securityDefinitions: {
-    googleOAuth2: {
-      type: 'oauth2',
-      flow: 'implicit',
-      authorizationUrl: '/auth/google',
-      scopes: {
-        profile: 'Access your profile information',
-        email: 'Access your email address',
-      },
-    },
     cookieAuth: {
       type: 'apiKey',
       in: 'cookie',
@@ -45,9 +35,59 @@ const doc = {
       description: 'JWT token (format: Bearer <token>)',
     },
   },
+
   security: [{ cookieAuth: [] }, { bearerAuth: [] }],
 
-  // Tags for grouping endpoints
+  definitions: {
+    Audiobook: {
+      type: 'object',
+      properties: {
+        _id: { type: 'string', example: '6984291c7ce7232969cc8678' },
+        title: { type: 'string', example: 'The Historian' },
+        author: { type: 'string', example: 'Elizabeth Kostova' },
+        listening_length: { type: 'string', example: '26 hours and 6 minutes' },
+        publisher: { type: 'string', example: 'Random House Audio' },
+        narrator: { type: 'string', example: 'Justine Eyre, Paul Michael' },
+        ASIN: { type: 'string', example: 'JB000E0LDRU' },
+        audio_release_date: { type: 'string', example: 'November 30, 2010' },
+        description: {
+          type: 'string',
+          example:
+            'The record-breaking phenomenon from Elizabeth Kostova is a celebrated …',
+        },
+      },
+      required: [
+        'title',
+        'author',
+        'listening_length',
+        'publisher',
+        'narrator',
+        'ASIN',
+        'audio_release_date',
+        'description',
+      ],
+    },
+    User: {
+      type: 'object',
+      properties: {
+        _id: { type: 'string', example: '69843aa57ce7232969cc8688' },
+        googleId: { type: 'string', example: '123456789012345678901' },
+        displayName: { type: 'string', example: 'John Smith' },
+        firstName: { type: 'string', example: 'John' },
+        lastName: { type: 'string', example: 'Smith' },
+        email: { type: 'string', example: 'john.smith@gmail.com' },
+        date: { type: 'string', example: '01/10/2024' },
+      },
+      required: [
+        'googleId',
+        'displayName',
+        'firstName',
+        'lastName',
+        'email',
+        'date',
+      ],
+    },
+  },
   tags: [
     {
       name: 'Audiobooks',
@@ -66,13 +106,14 @@ const doc = {
 
 const outputFile = './swagger.json';
 const endpointsFiles = [
-  path.join(__dirname, './routes/audiobooks.js'),
-  path.join(__dirname, './routes/users.js'),
-  path.join(__dirname, './routes/auth.js'),
-  path.join(__dirname, './routes/index.js'),
+  './routes/index.js', // This will capture all routes mounted in index
 ];
 
 // Generate swagger.json
-swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
-  console.log('Swagger documentation generated successfully');
-});
+swaggerAutogen(outputFile, endpointsFiles, doc)
+  .then(() => {
+    console.log('Swagger documentation generated successfully');
+  })
+  .catch((err) => {
+    console.error('Error generating swagger:', err);
+  });
