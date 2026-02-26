@@ -8,7 +8,6 @@
   "host": "localhost:8080",
   "basePath": "/",
   "schemes": ["http", "https"],
-
   "securityDefinitions": {
     "cookieAuth": {
       "type": "apiKey",
@@ -18,6 +17,7 @@
     }
   },
 
+  "security": [{ "cookieAuth": [] }],
   "paths": {
     "/audiobooks": {
       "get": {
@@ -77,17 +77,11 @@
         }
       }
     },
-
     "/audiobooks/{id}": {
       "get": {
         "description": "Get audiobook by ID",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
+          { "name": "id", "in": "path", "required": true, "type": "string" }
         ],
         "responses": {
           "200": { "description": "OK" },
@@ -99,12 +93,7 @@
         "description": "Update audiobook by ID (Authentication required)",
         "security": [{ "cookieAuth": [] }],
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
+          { "name": "id", "in": "path", "required": true, "type": "string" },
           {
             "name": "body",
             "in": "body",
@@ -125,12 +114,7 @@
         "description": "Delete audiobook by ID (Authentication required)",
         "security": [{ "cookieAuth": [] }],
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
+          { "name": "id", "in": "path", "required": true, "type": "string" }
         ],
         "responses": {
           "200": { "description": "Audiobook deleted successfully" },
@@ -140,7 +124,6 @@
         }
       }
     },
-
     "/users": {
       "get": {
         "description": "Get all users (Authentication required)",
@@ -181,18 +164,12 @@
         }
       }
     },
-
     "/users/{id}": {
       "get": {
         "description": "Get user by ID (Authentication required)",
         "security": [{ "cookieAuth": [] }],
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
+          { "name": "id", "in": "path", "required": true, "type": "string" }
         ],
         "responses": {
           "200": { "description": "OK" },
@@ -205,12 +182,7 @@
         "description": "Update user by ID (Authentication required)",
         "security": [{ "cookieAuth": [] }],
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
+          { "name": "id", "in": "path", "required": true, "type": "string" }
         ],
         "responses": {
           "200": { "description": "User updated successfully" },
@@ -223,12 +195,7 @@
         "description": "Delete user by ID (Authentication required)",
         "security": [{ "cookieAuth": [] }],
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
+          { "name": "id", "in": "path", "required": true, "type": "string" }
         ],
         "responses": {
           "200": { "description": "User deleted successfully" },
@@ -238,7 +205,6 @@
         }
       }
     },
-
     "/auth/google": {
       "get": {
         "description": "Authenticate using Google OAuth",
@@ -247,7 +213,6 @@
         }
       }
     },
-
     "/auth/google/callback": {
       "get": {
         "description": "Google OAuth callback endpoint",
@@ -256,7 +221,6 @@
         }
       }
     },
-
     "/auth/me": {
       "get": {
         "description": "Get current authenticated user",
@@ -267,7 +231,6 @@
         }
       }
     },
-
     "/auth/logout": {
       "get": {
         "description": "Logout current user",
