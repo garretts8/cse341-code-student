@@ -9,6 +9,9 @@ const passport = require('./config/passport');
 const mongodb = require('./db/connect');
 const morgan = require('morgan');
 const keys = require('./config/keys');
+const { graphqlHTTP } = require('express-graphql');
+const graphqlSchema = require('./graphql/schema');
+const graphqlResolvers = require('./graphql/resolvers');
 
 // Load config
 dotenv.config({ paths: './.env' });
@@ -58,7 +61,7 @@ const corsOptions = {
   origin: isProduction
     ? [
         'https://cse341-code-student-1.onrender.com',
-        'https://cse341-code-student-1.onrender.com', // Add your actual Render URL
+        'https://cse341-code-student-1.onrender.com',
       ]
     : ['http://localhost:8080', 'http://localhost:3000'],
   credentials: true,
@@ -94,6 +97,25 @@ app.use('/api-docs', require('./routes/swagger'));
 
 // Main index route handler
 app.use('/', require('./routes/index'));
+
+// GraphQL endpoint
+app.use(
+  '/graphql',
+  graphqlHTTP((req, res) => ({
+    schema: graphqlSchema,
+    rootValue: graphqlResolvers,
+    graphiql: true,
+    context: { req, res },
+    customFormatErrorFn: (err) => {
+      console.error('GraphQL Error:', err);
+      return {
+        message: err.message,
+        status: err.originalError?.status || 400,
+        path: err.path,
+      };
+    },
+  })),
+);
 
 // 404 handler
 app.use((req, res) => {

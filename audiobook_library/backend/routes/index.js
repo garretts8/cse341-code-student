@@ -49,6 +49,10 @@ routes.get('/', (req, res) => {
         me: 'GET /auth/me',
         users: 'GET /auth/users',
       },
+      graphql: {
+        playground: 'GET /graphql',
+        endpoint: 'POST /graphql',
+      },
     },
     documentation: '/api-docs',
   });
