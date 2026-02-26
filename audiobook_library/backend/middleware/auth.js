@@ -3,11 +3,7 @@ const keys = require('../config/keys');
 
 // Middleware to check if user is authenticated
 const isAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated && req.isAuthenticated()) {
-    return next();
-  }
-
-  // Check for JWT token
+  // Check for JWT token FIRST (for API requests)
   const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
   if (token) {
@@ -19,8 +15,16 @@ const isAuthenticated = (req, res, next) => {
       req.user = decoded;
       return next();
     } catch (err) {
-      // Token invalid
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid or expired token',
+      });
     }
+  }
+
+  // Fall back to session auth for web interface
+  if (req.isAuthenticated && req.isAuthenticated()) {
+    return next();
   }
 
   res.status(401).json({
@@ -45,7 +49,10 @@ const optionalAuth = (req, res, next) => {
       );
       req.user = decoded;
     } catch (err) {
-      // Token invalid - continue as unauthenticated
+      // Token invalid - continue as unauthenticated (this is correct for optionalAuth)
+      console.log(
+        'Invalid token in optionalAuth, continuing as unauthenticated',
+      );
     }
   }
 

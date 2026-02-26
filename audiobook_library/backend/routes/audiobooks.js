@@ -4,11 +4,12 @@ const { audiobookValidationRules } = require('../middleware/validation');
 const { isAuthenticated } = require('../middleware/auth');
 
 // GET all audiobooks
-routes.get('/', audiobookController.getAllAudiobooks);
+routes.get('/', isAuthenticated, audiobookController.getAllAudiobooks);
 
 // GET a single audiobook by ID (with validation)
 routes.get(
   '/:id',
+  isAuthenticated,
   audiobookValidationRules.getById,
   audiobookController.getAudiobookById,
 );
