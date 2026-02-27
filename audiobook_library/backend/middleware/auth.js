@@ -3,7 +3,7 @@ const keys = require('../config/keys');
 
 // Middleware to check if user is authenticated
 const isAuthenticated = (req, res, next) => {
-  // Check for JWT token FIRST (for API requests)
+  // Check for JWT token in cookies or Authorization header
   const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
   if (token) {

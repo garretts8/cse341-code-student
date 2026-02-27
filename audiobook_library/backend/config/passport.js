@@ -3,12 +3,13 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const keys = require('./keys');
 const mongodb = require('../db/connect');
 
-// Serialize user - store user ID in session
+/* Serialize user - store user ID in session. Only the user
+ID is stored in the session   */
 passport.serializeUser((user, done) => {
   done(null, user._id.toString());
 });
 
-// Deserialize user - retrieve full user object from database using ID
+// Deserialize user - retrieve full user from database using stored ID
 passport.deserializeUser(async (id, done) => {
   try {
     const { ObjectId } = require('mongodb');

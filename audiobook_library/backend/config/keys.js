@@ -1,9 +1,12 @@
 // Load environment variables
 require('dotenv').config({ path: './.env' });
 
+//Determine if app is running in production(based on RENDER or Node_ENV)
 const isProduction =
   process.env.RENDER === 'true' || process.env.NODE_ENV === 'production';
 
+/*Exports organized config object with google OAuth credentials, callback URLs,
+Session and JWT secrets and productions status*/
 module.exports = {
   google: {
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,

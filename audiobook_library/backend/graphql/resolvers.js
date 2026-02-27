@@ -3,7 +3,7 @@ const mongodb = require('../db/connect');
 const audiobookController = require('../controllers/audiobooks');
 const userController = require('../controllers/users');
 
-// Reuse your existing controller logic!
+// Reuses existing MongoDB logic from controllers.
 const resolvers = {
   // Queries
   audiobooks: async (args, context) => {
